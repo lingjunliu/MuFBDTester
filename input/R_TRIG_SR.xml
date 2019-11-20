@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="KAIST_SELAB" productName="noNameNow" productVersion="1.0" creationDateTime="2019-01-14T15:39:07"/>
+  <contentHeader name="Example1" modificationDateTime="2019-02-19T14:16:39">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="10" y="10"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="program0" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="R_TRIG_Switch">
+              <type>
+                <derived name="R_TRIG"/>
+              </type>
+            </variable>
+            <variable name="SR_Manual">
+              <type>
+                <derived name="SR"/>
+              </type>
+            </variable>
+          </localVars>
+          <inputVars>
+            <variable name="gDiSwitchManual">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </inputVars>
+          <inOutVars>
+            <variable name="cmdManual">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </inOutVars>
+        </interface>
+        <body>
+          <FBD>
+            <block localId="1" typeName="AND" executionOrderId="0" height="100" width="60">
+              <position x="650" y="110"/>
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn>
+                    <relPosition x="0" y="40"/>
+                    <connection refLocalId="12" formalParameter="Q">
+                      <position x="650" y="150"/>
+                      <position x="465" y="150"/>
+                      <position x="465" y="250"/>
+                      <position x="370" y="250"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2" negated="true">
+                  <connectionPointIn>
+                    <relPosition x="0" y="80"/>
+                    <connection refLocalId="15">
+                      <position x="650" y="190"/>
+                      <position x="590" y="190"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut>
+                    <relPosition x="60" y="40"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <block localId="12" typeName="R_TRIG" instanceName="R_TRIG_Switch" executionOrderId="0" height="40" width="60">
+              <position x="310" y="220"/>
+              <inputVariables>
+                <variable formalParameter="CLK">
+                  <connectionPointIn>
+                    <relPosition x="0" y="30"/>
+                    <connection refLocalId="14">
+                      <position x="310" y="250"/>
+                      <position x="250" y="250"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="Q">
+                  <connectionPointOut>
+                    <relPosition x="60" y="30"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <block localId="2" typeName="AND" executionOrderId="0" height="100" width="60">
+              <position x="650" y="280"/>
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn>
+                    <relPosition x="0" y="40"/>
+                    <connection refLocalId="12" formalParameter="Q">
+                      <position x="650" y="320"/>
+                      <position x="465" y="320"/>
+                      <position x="465" y="250"/>
+                      <position x="370" y="250"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn>
+                    <relPosition x="0" y="80"/>
+                    <connection refLocalId="3">
+                      <position x="650" y="360"/>
+                      <position x="590" y="360"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut>
+                    <relPosition x="60" y="40"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <block localId="13" typeName="SR" instanceName="SR_Manual" executionOrderId="0" height="60" width="50">
+              <position x="880" y="270"/>
+              <inputVariables>
+                <variable formalParameter="S1">
+                  <connectionPointIn>
+                    <relPosition x="0" y="30"/>
+                    <connection refLocalId="1" formalParameter="OUT">
+                      <position x="880" y="300"/>
+                      <position x="820" y="300"/>
+                      <position x="820" y="150"/>
+                      <position x="710" y="150"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="R">
+                  <connectionPointIn>
+                    <relPosition x="0" y="50"/>
+                    <connection refLocalId="2" formalParameter="OUT">
+                      <position x="880" y="320"/>
+                      <position x="710" y="320"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="Q1">
+                  <connectionPointOut>
+                    <relPosition x="50" y="30"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <inVariable localId="14" executionOrderId="0" height="30" width="110" negated="false">
+              <position x="140" y="230"/>
+              <connectionPointOut>
+                <relPosition x="110" y="20"/>
+              </connectionPointOut>
+              <expression>gDiSwitchManual</expression>
+            </inVariable>
+            <inVariable localId="15" executionOrderId="0" height="30" width="70" negated="false">
+              <position x="520" y="170"/>
+              <connectionPointOut>
+                <relPosition x="70" y="20"/>
+              </connectionPointOut>
+              <expression>cmdManual</expression>
+            </inVariable>
+            <inVariable localId="3" executionOrderId="0" height="30" width="70" negated="false">
+              <position x="520" y="340"/>
+              <connectionPointOut>
+                <relPosition x="70" y="20"/>
+              </connectionPointOut>
+              <expression>cmdManual</expression>
+            </inVariable>
+            <outVariable localId="16" executionOrderId="0" height="30" width="70" negated="false">
+              <position x="990" y="280"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="13" formalParameter="Q1">
+                  <position x="990" y="300"/>
+                  <position x="930" y="300"/>
+                </connection>
+              </connectionPointIn>
+              <expression>cmdManual</expression>
+            </outVariable>
+          </FBD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations/>
+  </instances>
+</project>

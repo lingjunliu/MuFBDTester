@@ -1,0 +1,434 @@
+// '//'로 시작되는 행은 comments
+// pre_ 로 시작하는 변수는 한 test case 전 Function block의 input variable의 값을 말합니다.
+// in_ 으로 시작하는 변수는 Function block의 내부 변수입니다.
+// **중요** A + B + C 와 같은 식을, (A + B) + C 와 같이, 계산 순서를 정해서 써야 합니다.
+//-------------------------
+// 1) Arithmetic group
+//-------------------------
+NONBOOL ADD2(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+NONBOOL ADD3(IN1, IN2, IN3)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : TRUE
+NONBOOL ADD4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : TRUE
+ FC(IN4, OUT) : TRUE
+NONBOOL DIV(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+NONBOOL MOD(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+NONBOOL MOVE(IN)
+ FC(IN, OUT) : TRUE
+NONBOOL MUL2(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+NONBOOL MUL3(IN1, IN2, IN3)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : TRUE
+NONBOOL MUL4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : TRUE
+ FC(IN4, OUT) : TRUE
+NONBOOL SUB(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+NONBOOL TIME;DIV(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+NONBOOL TIME;MUL(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+NONBOOL ABS(IN)
+ FC(IN, OUT) : TRUE
+//-------------------------
+// 2) Bistable group (added @2015-07-18)
+//-------------------------
+BOOL RS(S, R1)
+ FBC(S, Q1) : (~S | ~R1) & (S | R1 | (~pre_Q1 & ~R1))
+ FBC(R1, Q1) : ~R1 & (R1 | (~pre_Q1 & ~S))
+BOOL SR(S1, R)
+ FBC(S1, Q1) : S1 | R | (~pre_Q1 & ~R))
+ FBC(R, Q1) : (~R | S1) & (R | (~pre_Q1 & ~S1))
+//-------------------------
+// 3) Comparison group
+//-------------------------
+BOOL EQ(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL EQ2(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL EQ3(IN1, IN2, IN3)
+ FC(IN1, OUT) : (~(IN1 = IN2)) | (IN2 = IN3)
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : (~(IN2 = IN3)) | (IN1 = IN2)
+BOOL EQ4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : (~(IN1 = IN2)) | ((IN2 = IN3) & (IN3 = IN4))
+ FC(IN2, OUT) : (~((IN1 = IN2) & (IN2 = IN3))) | (IN3 = IN4)
+ FC(IN3, OUT) : (~((IN2 = IN3) & (IN3 = IN4))) | (IN1 = IN2)
+ FC(IN4, OUT) : (~(IN3 = IN4)) | ((IN1 = IN2) & (IN2 = IN3))
+BOOL GE(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL GE2(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL GE3(IN1, IN2, IN3)
+ FC(IN1, OUT) : (~(IN1 >= IN2)) | (IN2 >= IN3)
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : (~(IN2 >= IN3)) | (IN1 >= IN2)
+BOOL GE4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : (~(IN1 >= IN2)) | ((IN2 >= IN3) & (IN3 >= IN4))
+ FC(IN2, OUT) : (~((IN1 >= IN2) & (IN2 >= IN3))) | (IN3 >= IN4)
+ FC(IN3, OUT) : (~((IN2 >= IN3) & (IN3 >= IN4))) | (IN1 >= IN2)
+ FC(IN4, OUT) : (~(IN3 >= IN4)) | ((IN1 >= IN2) & (IN2 >= IN3))
+BOOL GT(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL GT2(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL GT3(IN1, IN2, IN3)
+ FC(IN1, OUT) : (~(IN1 > IN2)) | (IN2 > IN3)
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : (~(IN2 > IN3)) | (IN1 > IN2)
+BOOL GT4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : (~(IN1 > IN2)) | ((IN2 > IN3) & (IN3 > IN4))
+ FC(IN2, OUT) : (~((IN1 > IN2) & (IN2 > IN3))) | (IN3 > IN4)
+ FC(IN3, OUT) : (~((IN2 > IN3) & (IN3 > IN4))) | (IN1 > IN2)
+ FC(IN4, OUT) : (~(IN3 > IN4)) | ((IN1 > IN2) & (IN2 > IN3))
+BOOL LE(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL LE2(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL LE3(IN1, IN2, IN3)
+ FC(IN1, OUT) : (~(IN1 <= IN2)) | (IN2 <= IN3)
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : (~(IN2 <= IN3)) | (IN1 <= IN2)
+BOOL LE4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : (~(IN1 <= IN2)) | ((IN2 <= IN3) & (IN3 <= IN4))
+ FC(IN2, OUT) : (~((IN1 <= IN2) & (IN2 <= IN3))) | (IN3 <= IN4)
+ FC(IN3, OUT) : (~((IN2 <= IN3) & (IN3 <= IN4))) | (IN1 <= IN2)
+ FC(IN4, OUT) : (~(IN3 <= IN4)) | ((IN1 <= IN2) & (IN2 <= IN3))
+BOOL LT(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL LT2(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+BOOL LT3(IN1, IN2, IN3)
+ FC(IN1, OUT) : (~(IN1 < IN2)) | (IN2 < IN3)
+ FC(IN2, OUT) : TRUE
+ FC(IN3, OUT) : (~(IN2 < IN3)) | (IN1 < IN2)
+BOOL LT4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : (~(IN1 < IN2)) | ((IN2 < IN3) & (IN3 < IN4))
+ FC(IN2, OUT) : (~((IN1 < IN2) & (IN2 < IN3))) | (IN3 < IN4)
+ FC(IN3, OUT) : (~((IN2 < IN3) & (IN3 < IN4))) | (IN1 < IN2)
+ FC(IN4, OUT) : (~(IN3 < IN4)) | ((IN1 < IN2) & (IN2 < IN3))
+BOOL NE(IN1, IN2)
+ FC(IN1, OUT) : TRUE
+ FC(IN2, OUT) : TRUE
+//-------------------------
+// 4) Converter group (to be added)
+//-------------------------
+//-------------------------
+// 5) Counter group (to be added)
+//-------------------------
+//-------------------------
+// 6) Edge detection group (added @2015-07-18)
+//-------------------------
+BOOL R_TRIG(CLK)
+ FBC(CLK, Q) : ~CLK | ~pre_CLK
+BOOL F_TRIG(CLK)
+ FBC(CLK, Q) : ~CLK & (CLK | ~pre_CLK)
+//-------------------------
+// 7) Numerical group (to be added)
+//-------------------------
+//-------------------------
+// 8) Logic group
+//-------------------------
+BOOL AND2(IN1, IN2)
+ FC(IN1, OUT) : (~IN1) | IN2
+ FC(IN2, OUT) : (~IN2) | IN1
+BOOL AND3(IN1, IN2, IN3)
+ FC(IN1, OUT) : (~IN1) | (IN2 & IN3)
+ FC(IN2, OUT) : (~IN2) | (IN1 & IN3)
+ FC(IN3, OUT) : (~IN3) | (IN1 & IN2)
+BOOL AND4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : (~IN1) | ((IN2 & IN3) & IN4)
+ FC(IN2, OUT) : (~IN2) | ((IN1 & IN3) & IN4)
+ FC(IN3, OUT) : (~IN3) | ((IN1 & IN2) & IN4)
+ FC(IN4, OUT) : (~IN4) | ((IN1 & IN2) & IN3)
+BOOL NOT(IN)
+ FC(IN, OUT) : TRUE
+BOOL OR2(IN1, IN2)
+ FC(IN1, OUT) : IN1 | (~IN2)
+ FC(IN2, OUT) : IN2 | (~IN1)
+BOOL OR3(IN1, IN2, IN3)
+ FC(IN1, OUT) : IN1 | (~(IN2 | IN3))
+ FC(IN2, OUT) : IN2 | (~(IN1 | IN3))
+ FC(IN3, OUT) : IN3 | (~(IN1 | IN2))
+BOOL OR4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : IN1 | (~((IN2 | IN3) | IN4))
+ FC(IN2, OUT) : IN2 | (~((IN1 | IN3) | IN4))
+ FC(IN3, OUT) : IN3 | (~((IN1 | IN2) | IN4))
+ FC(IN4, OUT) : IN4 | (~((IN1 | IN2) | IN3))
+NONBOOL ROL(IN, N)
+ FC(IN, OUT) : TRUE
+ FC(N, OUT) : TRUE
+NONBOOL ROR(IN, N)
+ FC(IN, OUT) : TRUE
+ FC(N, OUT) : TRUE
+NONBOOL SHL(IN, N)
+ FC(IN, OUT) : TRUE
+ FC(N, OUT) : TRUE
+NONBOOL SHR(IN, N)
+ FC(IN, OUT) : TRUE
+ FC(N, OUT) : TRUE
+NONBOOL XOR2(IN1, IN2)
+ FC(IN1, OUT) : (~IN2)
+ FC(IN2, OUT) : (~IN1)
+//-------------------------
+// (to be added)
+//-------------------------
+// XOR3(IN1, IN2, IN3)
+// FC(IN1, OUT) :
+// FC(IN2, OUT) :
+// FC(IN3, OUT) :
+// XOR4(IN1, IN2, IN3, IN4)
+// FC(IN1, OUT) :
+// FC(IN2, OUT) :
+// FC(IN3, OUT) :
+// FC(IN4, OUT) :
+//-------------------------
+// 9) Selection group
+//-------------------------
+UNDEF LIMIT(MN, IN, MX)
+ FC(MN, OUT) : IN < MN
+ FC(IN, OUT) : (IN >= MN) & (IN <= MX)
+ FC(MX, OUT) : IN > MX
+BOOL LIMIT_BOOL(MN, IN, MX)
+ FC(MN, OUT) : IN < MN
+ FC(IN, OUT) : (IN >= MN) & (IN <= MX)
+ FC(MX, OUT) : IN > MX
+NONBOOL LIMIT_INT(MN, IN, MX)
+ FC(MN, OUT) : IN < MN
+ FC(IN, OUT) : (IN >= MN) & (IN <= MX)
+ FC(MX, OUT) : IN > MX
+NONBOOL LIMIT_REAL(MN, IN, MX)
+ FC(MN, OUT) : IN < MN
+ FC(IN, OUT) : (IN >= MN) & (IN <= MX)
+ FC(MX, OUT) : IN > MX
+//---------- other types to be added
+UNDEF MAX2(IN1, IN2)
+ FC(IN1, OUT) : IN1 >= IN2
+ FC(IN2, OUT) : IN2 >= IN1
+BOOL MAX2_BOOL(IN1, IN2)
+ FC(IN1, OUT) : IN1 >= IN2
+ FC(IN2, OUT) : IN2 >= IN1
+NONBOOL MAX2_INT(IN1, IN2)
+ FC(IN1, OUT) : IN1 >= IN2
+ FC(IN2, OUT) : IN2 >= IN1
+NONBOOL MAX2_REAL(IN1, IN2)
+ FC(IN1, OUT) : IN1 >= IN2
+ FC(IN2, OUT) : IN2 >= IN1
+//---------- other types to be added
+UNDEF MAX3(IN1, IN2, IN3)
+ FC(IN1, OUT) : (IN1 >= IN2) & (IN1 >= IN3)
+ FC(IN2, OUT) : (IN2 >= IN1) & (IN2 >= IN3)
+ FC(IN3, OUT) : (IN3 >= IN1) & (IN3 >= IN2)
+BOOL MAX3_BOOL(IN1, IN2, IN3)
+ FC(IN1, OUT) : (IN1 >= IN2) & (IN1 >= IN3)
+ FC(IN2, OUT) : (IN2 >= IN1) & (IN2 >= IN3)
+ FC(IN3, OUT) : (IN3 >= IN1) & (IN3 >= IN2)
+NONBOOL MAX3_INT(IN1, IN2, IN3)
+ FC(IN1, OUT) : (IN1 >= IN2) & (IN1 >= IN3)
+ FC(IN2, OUT) : (IN2 >= IN1) & (IN2 >= IN3)
+ FC(IN3, OUT) : (IN3 >= IN1) & (IN3 >= IN2)
+NONBOOL MAX3_REAL(IN1, IN2, IN3)
+ FC(IN1, OUT) : (IN1 >= IN2) & (IN1 >= IN3)
+ FC(IN2, OUT) : (IN2 >= IN1) & (IN2 >= IN3)
+ FC(IN3, OUT) : (IN3 >= IN1) & (IN3 >= IN2)
+//---------- other types to be added
+UNDEF MAX4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : ((IN1 >= IN2) & (IN1 >= IN3)) & (IN1 >= IN4)
+ FC(IN2, OUT) : ((IN2 >= IN1) & (IN2 >= IN3)) & (IN2 >= IN4)
+ FC(IN3, OUT) : ((IN3 >= IN1) & (IN3 >= IN2)) & (IN3 >= IN4)
+ FC(IN4, OUT) : ((IN4 >= IN1) & (IN4 >= IN2)) & (IN4 >= IN3)
+BOOL MAX4_BOOL(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : ((IN1 >= IN2) & (IN1 >= IN3)) & (IN1 >= IN4)
+ FC(IN2, OUT) : ((IN2 >= IN1) & (IN2 >= IN3)) & (IN2 >= IN4)
+ FC(IN3, OUT) : ((IN3 >= IN1) & (IN3 >= IN2)) & (IN3 >= IN4)
+ FC(IN4, OUT) : ((IN4 >= IN1) & (IN4 >= IN2)) & (IN4 >= IN3)
+NONBOOL MAX4_INT(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : ((IN1 >= IN2) & (IN1 >= IN3)) & (IN1 >= IN4)
+ FC(IN2, OUT) : ((IN2 >= IN1) & (IN2 >= IN3)) & (IN2 >= IN4)
+ FC(IN3, OUT) : ((IN3 >= IN1) & (IN3 >= IN2)) & (IN3 >= IN4)
+ FC(IN4, OUT) : ((IN4 >= IN1) & (IN4 >= IN2)) & (IN4 >= IN3)
+NONBOOL MAX4_REAL(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : ((IN1 >= IN2) & (IN1 >= IN3)) & (IN1 >= IN4)
+ FC(IN2, OUT) : ((IN2 >= IN1) & (IN2 >= IN3)) & (IN2 >= IN4)
+ FC(IN3, OUT) : ((IN3 >= IN1) & (IN3 >= IN2)) & (IN3 >= IN4)
+ FC(IN4, OUT) : ((IN4 >= IN1) & (IN4 >= IN2)) & (IN4 >= IN3)
+//---------- other types to be added
+UNDEF MIN2(IN1, IN2)
+ FC(IN1, OUT) : IN1 <= IN2
+ FC(IN2, OUT) : IN2 <= IN1
+BOOL MIN2_BOOL(IN1, IN2)
+ FC(IN1, OUT) : IN1 <= IN2
+ FC(IN2, OUT) : IN2 <= IN1
+NONBOOL MIN2_INT(IN1, IN2)
+ FC(IN1, OUT) : IN1 <= IN2
+ FC(IN2, OUT) : IN2 <= IN1
+NONBOOL MIN2_REAL(IN1, IN2)
+ FC(IN1, OUT) : IN1 <= IN2
+ FC(IN2, OUT) : IN2 <= IN1
+//---------- other types to be added
+UNDEF MIN3(IN1, IN2, IN3)
+ FC(IN1, OUT) : (IN1 <= IN2) & (IN1 <= IN3)
+ FC(IN2, OUT) : (IN2 <= IN1) & (IN2 <= IN3)
+ FC(IN3, OUT) : (IN3 <= IN1) & (IN3 <= IN2)
+BOOL MIN3_BOOL(IN1, IN2, IN3)
+ FC(IN1, OUT) : (IN1 <= IN2) & (IN1 <= IN3)
+ FC(IN2, OUT) : (IN2 <= IN1) & (IN2 <= IN3)
+ FC(IN3, OUT) : (IN3 <= IN1) & (IN3 <= IN2)
+NONBOOL MIN3_INT(IN1, IN2, IN3)
+ FC(IN1, OUT) : (IN1 <= IN2) & (IN1 <= IN3)
+ FC(IN2, OUT) : (IN2 <= IN1) & (IN2 <= IN3)
+ FC(IN3, OUT) : (IN3 <= IN1) & (IN3 <= IN2)
+NONBOOL MIN3_REAL(IN1, IN2, IN3)
+ FC(IN1, OUT) : (IN1 <= IN2) & (IN1 <= IN3)
+ FC(IN2, OUT) : (IN2 <= IN1) & (IN2 <= IN3)
+ FC(IN3, OUT) : (IN3 <= IN1) & (IN3 <= IN2)
+//---------- other types to be added
+UNDEF MIN4(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : ((IN1 <= IN2) & (IN1 <= IN3)) & (IN1 <= IN4)
+ FC(IN2, OUT) : ((IN2 <= IN1) & (IN2 <= IN3)) & (IN2 <= IN4)
+ FC(IN3, OUT) : ((IN3 <= IN1) & (IN3 <= IN2)) & (IN3 <= IN4)
+ FC(IN4, OUT) : ((IN4 <= IN1) & (IN4 <= IN2)) & (IN4 <= IN3)
+BOOL MIN4_BOOL(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : ((IN1 <= IN2) & (IN1 <= IN3)) & (IN1 <= IN4)
+ FC(IN2, OUT) : ((IN2 <= IN1) & (IN2 <= IN3)) & (IN2 <= IN4)
+ FC(IN3, OUT) : ((IN3 <= IN1) & (IN3 <= IN2)) & (IN3 <= IN4)
+ FC(IN4, OUT) : ((IN4 <= IN1) & (IN4 <= IN2)) & (IN4 <= IN3)
+NONBOOL MIN4_INT(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : ((IN1 <= IN2) & (IN1 <= IN3)) & (IN1 <= IN4)
+ FC(IN2, OUT) : ((IN2 <= IN1) & (IN2 <= IN3)) & (IN2 <= IN4)
+ FC(IN3, OUT) : ((IN3 <= IN1) & (IN3 <= IN2)) & (IN3 <= IN4)
+ FC(IN4, OUT) : ((IN4 <= IN1) & (IN4 <= IN2)) & (IN4 <= IN3)
+NONBOOL MIN4_REAL(IN1, IN2, IN3, IN4)
+ FC(IN1, OUT) : ((IN1 <= IN2) & (IN1 <= IN3)) & (IN1 <= IN4)
+ FC(IN2, OUT) : ((IN2 <= IN1) & (IN2 <= IN3)) & (IN2 <= IN4)
+ FC(IN3, OUT) : ((IN3 <= IN1) & (IN3 <= IN2)) & (IN3 <= IN4)
+ FC(IN4, OUT) : ((IN4 <= IN1) & (IN4 <= IN2)) & (IN4 <= IN3)
+//---------- other types to be added
+UNDEF MUX2(K, IN1, IN2)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+BOOL MUX2_BOOL(K, IN1, IN2)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+NONBOOL MUX2_INT(K, IN1, IN2)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+NONBOOL MUX2_REAL(K, IN1, IN2)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+//---------- other types to be added
+UNDEF MUX3(K, IN1, IN2, IN3)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+ FC(IN3, OUT) : K = 3
+BOOL MUX3_BOOL(K, IN1, IN2, IN3)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+ FC(IN3, OUT) : K = 3
+NONBOOL MUX3_INT(K, IN1, IN2, IN3)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+ FC(IN3, OUT) : K = 3
+NONBOOL MUX3_REAL(K, IN1, IN2, IN3)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+ FC(IN3, OUT) : K = 3
+//---------- other types to be added
+UNDEF MUX4(K, IN1, IN2, IN3, IN4)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+ FC(IN3, OUT) : K = 3
+ FC(IN4, OUT) : K = 4
+BOOL MUX4_BOOL(K, IN1, IN2, IN3, IN4)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+ FC(IN3, OUT) : K = 3
+ FC(IN4, OUT) : K = 4
+NONBOOL MUX4_INT(K, IN1, IN2, IN3, IN4)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+ FC(IN3, OUT) : K = 3
+ FC(IN4, OUT) : K = 4
+NONBOOL MUX4_REAL(K, IN1, IN2, IN3, IN4)
+ FC(K, OUT) : TRUE
+ FC(IN1, OUT) : K = 1
+ FC(IN2, OUT) : K = 2
+ FC(IN3, OUT) : K = 3
+ FC(IN4, OUT) : K = 4
+//---------- other types to be added
+UNDEF SEL(G, IN1, IN2)
+ FC(G, OUT) : TRUE
+ FC(IN1, OUT) : (~G)
+ FC(IN2, OUT) : G
+BOOL SEL_BOOL(G, IN1, IN2)
+ FC(G, OUT) : TRUE
+ FC(IN1, OUT) : (~G)
+ FC(IN2, OUT) : G
+NONBOOL SEL_INT(G, IN1, IN2)
+ FC(G, OUT) : TRUE
+ FC(IN1, OUT) : (~G)
+ FC(IN2, OUT) : G
+NONBOOL SEL_REAL(G, IN1, IN2)
+ FC(G, OUT) : TRUE
+ FC(IN1, OUT) : (~G)
+ FC(IN2, OUT) : G
+//-------------------------
+// 10) Timer group
+//-------------------------
+BOOL TOF;Q(IN, PT)
+ FBC(IN, Q) : (IN | ((~(pre_IN)) & ((in_T = 0) | (in_T >= PT))))
+ FBC(PT, Q) : in_T > 0
+NONBOOL TOF;ET(IN, PT)
+ FBC(IN, ET) : TRUE
+ FBC(PT, ET) : TRUE
+NONBOOL TON;Q(IN, PT)
+ FBC(IN, Q) : ((~IN) | (pre_IN & (in_T >= PT)))
+ FBC(PT, Q) : in_T > 0
+NONBOOL TON;ET(IN, PT)
+ FBC(IN, ET) : TRUE
+ FBC(PT, ET) : TRUE
+NONBOOL TP;Q(IN, PT)
+ FBC(IN, Q) : = ((~IN) | ((~(pre_IN)) & (in_T=0)) | ((0 < in_T) & (in_T < PT))) & (IN | ((~(pre_IN)) & (in_T = 0)) | (pre_IN & (in_T >= PT)))
+ FBC(PT, Q) : in_T > 0
+NONBOOL TP;ET(IN, PT)
+ FBC(IN, ET) : TRUE
+ FBC(PT, ET) : TRUE

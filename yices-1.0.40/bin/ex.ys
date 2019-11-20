@@ -1,0 +1,17 @@
+(set-evidence! true)
+
+(define-type pc (scalar sleeping trying critical))
+(define x1::pc)
+(define x2::pc)
+(define z1::pc)
+(define z2::pc)
+(define w1::pc)
+(define w2::pc)
+
+;;(assert (= x1 x2))
+(assert+ (= x1 z1) 2)
+(assert+ (= x2 critical) 4)
+(assert+ (= x2 z2) 6)
+(assert+ (/= z2 w1) 6)
+(assert+ (= x1 trying) 8)
+(max-sat)

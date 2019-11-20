@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="KAIST_SELAB" productName="noNameNow" productVersion="1.0" creationDateTime="2019-01-14T15:39:07"/>
+  <contentHeader name="Example1" modificationDateTime="2019-03-13T12:08:51">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="10" y="10"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="program0" pouType="program">
+        <interface>
+          <inOutVars>
+            <variable name="CTU_UP">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </inOutVars>
+          <inputVars>
+            <variable name="FILL_BIN">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="PULSE_TIME">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="BIN_EMPTY">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SETPOINT">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="TON_et">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="BIN_LEVEL">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="CTU_Q">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="PULSE">
+              <type>
+                <derived name="TON"/>
+              </type>
+            </variable>
+            <variable name="LEVEL_CTR">
+              <type>
+                <derived name="CTU"/>
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <FBD>
+            <block localId="1" typeName="AND" executionOrderId="0" height="100" width="60">
+              <position x="280" y="190"/>
+              <inputVariables>
+                <variable formalParameter="IN1" negated="true">
+                  <connectionPointIn>
+                    <relPosition x="0" y="40"/>
+                    <connection refLocalId="4">
+                      <position x="280" y="230"/>
+                      <position x="210" y="230"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn>
+                    <relPosition x="0" y="80"/>
+                    <connection refLocalId="5">
+                      <position x="280" y="270"/>
+                      <position x="210" y="270"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut>
+                    <relPosition x="60" y="40"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <block localId="2" typeName="TON" instanceName="PULSE" executionOrderId="0" height="100" width="50">
+              <position x="540" y="190"/>
+              <inputVariables>
+                <variable formalParameter="IN">
+                  <connectionPointIn>
+                    <relPosition x="0" y="40"/>
+                    <connection refLocalId="1" formalParameter="OUT">
+                      <position x="540" y="230"/>
+                      <position x="340" y="230"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="PT">
+                  <connectionPointIn>
+                    <relPosition x="0" y="80"/>
+                    <connection refLocalId="6">
+                      <position x="540" y="270"/>
+                      <position x="460" y="270"/>
+                      <position x="460" y="310"/>
+                      <position x="210" y="310"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="Q">
+                  <connectionPointOut>
+                    <relPosition x="50" y="40"/>
+                  </connectionPointOut>
+                </variable>
+                <variable formalParameter="ET">
+                  <connectionPointOut>
+                    <relPosition x="50" y="80"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <block localId="3" typeName="CTU" instanceName="LEVEL_CTR" executionOrderId="0" height="140" width="50">
+              <position x="920" y="190"/>
+              <inputVariables>
+                <variable formalParameter="CU" edge="rising">
+                  <connectionPointIn>
+                    <relPosition x="0" y="40"/>
+                    <connection refLocalId="2" formalParameter="Q">
+                      <position x="920" y="230"/>
+                      <position x="590" y="230"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="R">
+                  <connectionPointIn>
+                    <relPosition x="0" y="80"/>
+                    <connection refLocalId="8">
+                      <position x="920" y="270"/>
+                      <position x="840" y="270"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="PV">
+                  <connectionPointIn>
+                    <relPosition x="0" y="120"/>
+                    <connection refLocalId="9">
+                      <position x="920" y="310"/>
+                      <position x="840" y="310"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="Q">
+                  <connectionPointOut>
+                    <relPosition x="50" y="40"/>
+                  </connectionPointOut>
+                </variable>
+                <variable formalParameter="CV">
+                  <connectionPointOut>
+                    <relPosition x="50" y="80"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <inVariable localId="4" executionOrderId="0" height="30" width="60" negated="false">
+              <position x="150" y="210"/>
+              <connectionPointOut>
+                <relPosition x="60" y="20"/>
+              </connectionPointOut>
+              <expression>CTU_UP</expression>
+            </inVariable>
+            <inVariable localId="5" executionOrderId="0" height="30" width="60" negated="false">
+              <position x="150" y="250"/>
+              <connectionPointOut>
+                <relPosition x="60" y="20"/>
+              </connectionPointOut>
+              <expression>FILL_BIN</expression>
+            </inVariable>
+            <inVariable localId="6" executionOrderId="0" height="30" width="80" negated="false">
+              <position x="130" y="290"/>
+              <connectionPointOut>
+                <relPosition x="80" y="20"/>
+              </connectionPointOut>
+              <expression>PULSE_TIME</expression>
+            </inVariable>
+            <outVariable localId="7" executionOrderId="0" height="30" width="60" negated="false">
+              <position x="650" y="250"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="2" formalParameter="ET">
+                  <position x="650" y="270"/>
+                  <position x="590" y="270"/>
+                </connection>
+              </connectionPointIn>
+              <expression>TON_et</expression>
+            </outVariable>
+            <inVariable localId="8" executionOrderId="0" height="30" width="80" negated="false">
+              <position x="760" y="250"/>
+              <connectionPointOut>
+                <relPosition x="80" y="20"/>
+              </connectionPointOut>
+              <expression>BIN_EMPTY</expression>
+            </inVariable>
+            <inVariable localId="9" executionOrderId="0" height="30" width="80" negated="false">
+              <position x="760" y="290"/>
+              <connectionPointOut>
+                <relPosition x="80" y="20"/>
+              </connectionPointOut>
+              <expression>SETPOINT</expression>
+            </inVariable>
+            <outVariable localId="10" executionOrderId="0" height="30" width="50" negated="false">
+              <position x="1040" y="210"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="3" formalParameter="Q">
+                  <position x="1040" y="230"/>
+                  <position x="970" y="230"/>
+                </connection>
+              </connectionPointIn>
+              <expression>CTU_Q</expression>
+            </outVariable>
+            <outVariable localId="11" executionOrderId="0" height="30" width="70" negated="false">
+              <position x="1040" y="250"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="3" formalParameter="CV">
+                  <position x="1040" y="270"/>
+                  <position x="970" y="270"/>
+                </connection>
+              </connectionPointIn>
+              <expression>BIN_LEVEL</expression>
+            </outVariable>
+            <outVariable localId="12" executionOrderId="0" height="30" width="50" negated="false">
+              <position x="690" y="170"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="2" formalParameter="Q">
+                  <position x="690" y="190"/>
+                  <position x="640" y="190"/>
+                  <position x="640" y="230"/>
+                  <position x="590" y="230"/>
+                </connection>
+              </connectionPointIn>
+              <expression>CTU_UP</expression>
+            </outVariable>
+          </FBD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations/>
+  </instances>
+</project>

@@ -1,0 +1,92 @@
+ADD2(IN1, IN2) : OUT
+ IN1 + IN2
+ADD3(IN1, IN2, IN3) : OUT
+ (IN1 + IN2) + IN3
+ADD4(IN1, IN2, IN3, IN4) : OUT
+ ((IN1 + IN2) + IN3) + IN4
+MUL2(IN1, IN2) : OUT
+ IN1 * IN2
+MUL3(IN1, IN2, IN3) : OUT
+ (IN1 * IN2) * IN3
+MUL4(IN1, IN2, IN3, IN4) : OUT
+ ((IN1 * IN2) * IN3) * IN4
+SUB(IN1, IN2) : OUT
+ IN1 - IN2
+DIV(IN1, IN2) : OUT
+ IN1 / IN2
+MOD(IN1, IN2) : OUT
+ IN1 % IN2
+ABS(IN) : OUT
+ (IN > 0) ? IN : (0 - IN)
+EXPT(IN1, IN2) : OUT
+ IN1 ** IN2
+AND2(IN1, IN2) : OUT
+ IN1 & IN2
+AND3(IN1, IN2, IN3) : OUT
+ (IN1 & IN2) & IN3
+AND4(IN1, IN2, IN3, IN4) : OUT
+ ((IN1 & IN2) & IN3) & IN4
+OR2(IN1, IN2) : OUT
+ IN1 | IN2
+OR3(IN1, IN2, IN3) : OUT
+ (IN1 | IN2) | IN3
+OR4(IN1, IN2, IN3, IN4) : OUT
+ ((IN1 | IN2) | IN3) | IN4
+XOR2(IN1, IN2) : OUT
+ (IN1 & (~IN2)) | ((~IN1) & IN2)
+NOT(IN) : OUT
+ ~IN
+SEL(G, IN1, IN2) : OUT
+ G ? IN2 : IN1
+GT(IN1, IN2) : OUT
+ IN1 > IN2
+GE(IN1, IN2) : OUT
+ IN1 >= IN2
+EQ(IN1, IN2) : OUT
+ IN1 = IN2
+NE(IN1, IN2) : OUT
+ IN1 != IN2
+LE(IN1, IN2) : OUT
+ IN1 <= IN2
+LT(IN1, IN2) : OUT
+ IN1 < IN2
+RS(S, R1) : Q1
+ (S | pre_Q1) & (~R1)
+SR(S1, R) : Q1
+ S1 | ((~R) & pre_Q1)
+R_TRIG(CLK) : Q
+ ((~pre_CLK) & CLK)
+F_TRIG(CLK) : Q
+ (pre_CLK & (~CLK))
+CTU(CU, R, PV) : Q
+ pre_CV>=PV
+CTU(CU, R, PV) : CV
+ R ? 0 : ((CU & (pre_CV<PV)) ? (pre_CV+1) : pre_CV)
+CTD(CD, LD, PV) : Q
+ pre_CV<=0
+CTD(CD, LD, PV) : CV
+ LD ? PV : ((CD & (pre_CV>0))? (pre_CV-1) : pre_CV)
+CTUD(CU, CD, R, LD, PV) : QU
+ pre_CV>=PV
+CTUD(CU, CD, R, LD, PV) : QD
+ CV<=0
+CTUD(CU, CD, R, LD, PV) : CV
+ R ? 0 : (LD ? PV : ((CU & (CV<PV))? CV+1 : ((CD & (CV>0))? CV-1 : CV)))
+TON(IN, PT) : ET
+ in_T
+TON(IN, PT) : Q
+ IN & (in_T >= PT)
+TON(IN, PT) : in_T
+ IN? ((in_T < PT)? (in_T + SCAN_TIME) : PT) : 0
+TOF(IN, PT) : ET
+ in_T
+TOF(IN, PT) : Q
+ IN | (in_T < PT)
+TOF(IN, PT) : in_T
+ (~IN) ? ((in_T < PT)? (in_T + SCAN_TIME) : PT) : 0
+TP(IN, PT) : ET
+ in_T
+TP(IN, PT) : Q
+ (IN & (in_T=0)) | ((in_T > 0) & (in_T < PT))
+TP(IN, PT) : in_T
+ (IN? ((in_T < PT)? (in_T+SCAN_TIME) : PT) : (((0 < in_T) & (in_T < PT))? (in_T+SCAN_TIME) : 0))
