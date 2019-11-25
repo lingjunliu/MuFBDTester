@@ -46,7 +46,7 @@ public class YicesFileGenerator {
 				//System.out.println(Files.probeContentType(file.toPath()));
 				if(file.getName().contains("mutant") && file.getName().contains("xml")) {
 					String temp = file.getName().substring(7, 11);
-					if(mutantIsSelected.contains(Integer.parseInt(temp))&&Integer.parseInt(temp)==32/*&&Integer.parseInt(temp)!=17&&Integer.parseInt(temp)!=154&&Integer.parseInt(temp)!=160&&Integer.parseInt(temp)!=161*//*Integer.parseInt(temp)!=156&&Integer.parseInt(temp)!=157&&Integer.parseInt(temp)!=158&&Integer.parseInt(temp)!=159&&Integer.parseInt(temp)!=160*/) {
+					if(mutantIsSelected.contains(Integer.parseInt(temp))/*&&Integer.parseInt(temp)==32*//*&&Integer.parseInt(temp)!=17&&Integer.parseInt(temp)!=154&&Integer.parseInt(temp)!=160&&Integer.parseInt(temp)!=161*//*Integer.parseInt(temp)!=156&&Integer.parseInt(temp)!=157&&Integer.parseInt(temp)!=158&&Integer.parseInt(temp)!=159&&Integer.parseInt(temp)!=160*/) {
 						mutantIDList.add(Integer.parseInt(temp));
 						mutantFiles.add(file.getName());
 					}
