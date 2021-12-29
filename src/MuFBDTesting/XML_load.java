@@ -290,8 +290,8 @@ public class XML_load {
 					connections.add(newCon); // 추출된 연결 정보들은 connections 에 들어간다.
 					prevelem.FormalParam = inVar.getFormalParameter();
 
-					if(prevelem.FormalParam.equals("S") || prevelem.FormalParam.equals("S1") || prevelem.FormalParam.equals("R") || prevelem.FormalParam.equals("R1")|| prevelem.FormalParam.equals("CLK"))
-						setIter = 2;
+					if(prevelem.FormalParam.equals("S") || prevelem.FormalParam.equals("S1") || prevelem.FormalParam.equals("R1")|| prevelem.FormalParam.equals("CLK"))
+						setIter = 3;
 					if (prevelem.type == Element.BLOCK) {
 						console_println(prevelem.LocalID + prevelem.block.getTypeName() + " <-> " + nextelem.LocalID + " "
 								+ nextelem.block.getTypeName());
