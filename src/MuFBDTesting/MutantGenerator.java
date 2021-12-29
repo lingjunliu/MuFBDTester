@@ -637,6 +637,74 @@ public class MutantGenerator {
 							outvar.setNegated(inverter);
 						}
 					}
+					else if (funcName.contains("TON") || funcName.contains("TOF") || funcName.contains("TP")) {
+						IInVariableInBlock invar = block.getInVariables().get(0);
+						inverter = invar.isNegated();
+						mutantInfoList.add(mutantID,
+								mutantOperator + "\t" + block.getLocalID() + "\t" + invar.getFormalParameter() + "\t"
+										+ inverter + " -> " + !inverter);
+						IID_list.add(mutantID);
+						invar.setNegated(!inverter);
+						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+						invar.setNegated(inverter);
+						
+						IOutVariableInBlock outvar = block.getOutVariables().get(0);
+						inverter = outvar.isNegated();
+						mutantInfoList.add(mutantID,
+								mutantOperator + "\t" + block.getLocalID() + "\t" + outvar.getFormalParameter() + "\t"
+										+ inverter + " -> " + !inverter);
+						IID_list.add(mutantID);
+						outvar.setNegated(!inverter);
+						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+						outvar.setNegated(inverter);
+					}
+					else if (funcName.contains("CTUD")) {
+						for (int n = 0; n < 4; n++) {
+							IInVariableInBlock invar = block.getInVariables().get(n);
+							inverter = invar.isNegated();
+							mutantInfoList.add(mutantID,
+									mutantOperator + "\t" + block.getLocalID() + "\t" + invar.getFormalParameter() + "\t"
+											+ inverter + " -> " + !inverter);
+							IID_list.add(mutantID);
+							invar.setNegated(!inverter);
+							writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+							invar.setNegated(inverter);
+						}
+						for (int m = 0; m < 2; m++) {
+							IOutVariableInBlock outvar = block.getOutVariables().get(m);
+							inverter = outvar.isNegated();
+							mutantInfoList.add(mutantID,
+									mutantOperator + "\t" + block.getLocalID() + "\t" + outvar.getFormalParameter() + "\t"
+											+ inverter + " -> " + !inverter);
+							IID_list.add(mutantID);
+							outvar.setNegated(!inverter);
+							writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+							outvar.setNegated(inverter);
+						}
+					}
+					else if (funcName.contains("CTU") || funcName.contains("CTD")) {
+						for (int n = 0; n < 2; n++) {
+							IInVariableInBlock invar = block.getInVariables().get(n);
+							inverter = invar.isNegated();
+							mutantInfoList.add(mutantID,
+									mutantOperator + "\t" + block.getLocalID() + "\t" + invar.getFormalParameter() + "\t"
+											+ inverter + " -> " + !inverter);
+							IID_list.add(mutantID);
+							invar.setNegated(!inverter);
+							writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+							invar.setNegated(inverter);
+						}
+						
+						IOutVariableInBlock outvar = block.getOutVariables().get(0);
+						inverter = outvar.isNegated();
+						mutantInfoList.add(mutantID,
+								mutantOperator + "\t" + block.getLocalID() + "\t" + outvar.getFormalParameter() + "\t"
+										+ inverter + " -> " + !inverter);
+						IID_list.add(mutantID);
+						outvar.setNegated(!inverter);
+						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+						outvar.setNegated(inverter);
+					}
 				}
 			}
 			// INVAR에 대한 Mutations: CVR (Constant Value Replacement)
