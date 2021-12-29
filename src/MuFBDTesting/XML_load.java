@@ -631,7 +631,7 @@ public class XML_load {
 		// Reads function calculation libary from FUNCTIONCALC.TXT
 		// and stores into functionCalcLibs(List).
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("lib\\Calc library_updated_20190110.txt"));
+			BufferedReader in = new BufferedReader(new FileReader("lib\\Calc library_updated_20200901.txt"));
 			String s;
 			while (true) {
 				s = acceptNonComment(in);
@@ -688,7 +688,7 @@ public class XML_load {
 	
 	static void getDPCLibrary() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("lib\\FC library_updated_20190110.txt"));
+			BufferedReader in = new BufferedReader(new FileReader("lib\\FC library_updated_20200901.txt"));
 			String s;
 			String fName;
 			String fType;
