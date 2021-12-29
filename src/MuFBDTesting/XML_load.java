@@ -61,7 +61,8 @@ public class XML_load {
 	private final static List<IOutVariable> outputVariables = new ArrayList<IOutVariable>();
 	private final static HashMap<String,LogicStatement> oneDepthFunctionCalcs = new HashMap<String, LogicStatement>();
 	private final static Set<Connection> feedbackConnections = new HashSet<Connection>();
-	public static int setIter=1;
+	static int defaultIter = 1;
+	public static int setIter= defaultIter;
 	private final static List<IBlock> blocks = new ArrayList<IBlock>();
 	private final static List<DPCStore> functionDPCs = new ArrayList<DPCStore>();
 	private final static List<FunctionVariable> functionBlockLocalVars = new ArrayList<FunctionVariable>();
@@ -185,7 +186,7 @@ public class XML_load {
 		dpathCount = 0;
 		prevDpathOutvar = "";
 		rewriteDpcNoRecurse = false;
-		setIter=1;
+		setIter=defaultIter;
 	}
 	
 	ParseXML parse_xml = new ParseXML();
