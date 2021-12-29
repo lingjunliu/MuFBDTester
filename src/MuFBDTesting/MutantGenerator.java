@@ -26,6 +26,7 @@ public class MutantGenerator {
 	
 	private ArrayList<String> mutantInfoList = new ArrayList<String>(100);
 	
+	/*** block replacement: list of replacable blocks ***/
 	private ArrayList<String> ABR2 = new ArrayList<String>();
 	private ArrayList<String> ABR3 = new ArrayList<String>();
 	private ArrayList<String> ABR4 = new ArrayList<String>();
@@ -47,21 +48,22 @@ public class MutantGenerator {
 	private ArrayList<String> BBR = new ArrayList<String>();
 	private ArrayList<String> CouBR = new ArrayList<String>();
 	
-	
+	/*** mutant id list of each operator ***/
 	public static ArrayList<Integer> CVR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> IID_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> SWI_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> ABR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> CBR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> LBR_list = new ArrayList<Integer>();
-	//private ArrayList<Integer> ConBR_list = new ArrayList<Integer>();
-	//private ArrayList<Integer> NBR_list = new ArrayList<Integer>();
+//	private ArrayList<Integer> ConBR_list = new ArrayList<Integer>();
+//	private ArrayList<Integer> NBR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> SBR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> BBR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> EBR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> CouBR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> TBR_list = new ArrayList<Integer>();
 	
+	/*** key: operator name; value: selected or not ***/
 	public static HashMap<String, Boolean> mutantOperatorList = new HashMap<String, Boolean>();
 	
 	public MutantGenerator() {
@@ -155,48 +157,27 @@ public class MutantGenerator {
 	private static String dirPath = System.getProperty("user.dir")+"/output/";
 	
 	public void generateMutant(String filePath) {
-		/*
-		CVR_list = new ArrayList<Integer>();
-		IID_list = new ArrayList<Integer>();
-		SWI_list = new ArrayList<Integer>();
-		ABR_list = new ArrayList<Integer>();
-		CBR_list = new ArrayList<Integer>();
-		LBR_list = new ArrayList<Integer>();
-		
-		SBR_list = new ArrayList<Integer>();
-		BBR_list = new ArrayList<Integer>();
-		EBR_list = new ArrayList<Integer>();
-		CouBR_list = new ArrayList<Integer>();
-		TBR_list = new ArrayList<Integer>();
-		*/
 		mutantID = 0;
 		
 		dirPath = System.getProperty("user.dir")+"/output/";
 		dirPath += CreateGUI.target + "/";
-		//MutantGenerator mg = new MutantGenerator();
 		ProjectImpl originalXML = readXML(filePath);
 		
 		printXMLInfo(originalXML);
 
-		//mutantOperatorList.put("CBR", true);
-		//mutantOperatorList.put("LBR", true);
-		//mutantOperatorList.put("TBR", true);
-		//mutantOperatorList.put("SWI", true);
-		//mutantOperatorList.put("IID", true);
-		//allOperator();
 		mutation(originalXML);
 
-		//printXMLInfo(originalXML);
+//		printXMLInfo(originalXML);
 
 		writeMutantInfo(dirPath + "mutant_Info.txt");
 	}
-	/*
-	public void allOperator() {
-		for (String key : mutantOperatorList.keySet()) {
-			mutantOperatorList.put(key, true);
-		}
-	}
-	*/
+	
+//	public void allOperator() {
+//		for (String key : mutantOperatorList.keySet()) {
+//			mutantOperatorList.put(key, true);
+//		}
+//	}
+	
 	public static void deselectAllOperator() {
 		for (String key : mutantOperatorList.keySet()) {
 			mutantOperatorList.put(key, false);
@@ -239,7 +220,7 @@ public class MutantGenerator {
 					System.out.println("\t" + outvar.getFormalParameter() + ": " + outvar.isNegated());
 				}
 			}
-			//print constants
+			// print constants
 			String number;
 			for (IInVariable invar : body.getInVariables()) {
 				number = invar.getExpression().trim();
@@ -283,26 +264,10 @@ public class MutantGenerator {
 			System.exit(0);
 		}
 	}
+	
 	private void replaceBlock(IBlock block, String operator) {
-		
-		//System.out.println("block.getOutVariables(): " + block.getOutVariables());
-		//System.out.println("block.getOutVariables().get(0): " + block.getOutVariables().get(0));
-		//System.out.println("block: " + block);
-		//System.out.println("operator: " + operator);
-
 		System.out.println("replaceBlock()\t" + block.getLocalID() + ": " + block.getTypeName() + " -> " + operator);
 		block.setTypeName(operator);
-		/*if (block.getOutVariables().size() > 1) {
-			System.err.println("block out variable size: " + block.getOutVariables().size());
-			for (IOutVariableInBlock outVar : block.getOutVariables()) {
-				System.out.println(outVar.getFormalParameter());
-			}
-			System.out.flush();
-			System.exit(-1);
-			// TODO: 만약에 outVariable이 2개 이상인 경우에는 따로 처리해야 함. 해당 상황이 발생하면 그때
-			// 처리합시다.
-		}
-		block.getOutVariables().get(0).setFormalParameter(operator);*/ // 필요없는 것 같음. 왜 바꾸지?
 	}
 	
 	static ArrayList<String> permutation = new ArrayList<String>();
@@ -312,36 +277,33 @@ public class MutantGenerator {
 
 		String mutantOperator = "";
 		String funcName;
-		//String[] splitName;
 		ArrayList<String> operatorList = null;
 		for (int i = 0; i < xml.getPOUs().size(); i++) {
 			FBD body = (FBD) xml.getPOUs().get(i).getBody();
 
-			// BLOCK에 대한 Mutations: ABR, CBR, LBR, TBR, EBR, BBR
+			// BLOCK에 대한 Mutations: ABR, CBR, LBR, SBR, TBR, EBR, BBR, CouBR
 			for (IBlock block : body.getBlocks()) {
-				//splitName = block.getTypeName().split("_");
 				funcName = block.getTypeName();
 				if(block.getTypeName().contains("ADD")||block.getTypeName().contains("MUL")||block.getTypeName().contains("EQ")||block.getTypeName().contains("GE")
 						||block.getTypeName().contains("GT")||block.getTypeName().contains("LE")||block.getTypeName().contains("LT")||block.getTypeName().contains("AND")
 						||block.getTypeName().contains("OR")||block.getTypeName().contains("XOR")||block.getTypeName().contains("MAX")||block.getTypeName().contains("MIN")) {
 					funcName = block.getTypeName()+block.getInVariables().size();
 				}
-				if(block.getTypeName().equals("MUX")) {
+				else if(block.getTypeName().equals("MUX")) {
 					funcName = block.getTypeName()+(block.getInVariables().size()-1);
 				}
-				if(block.getTypeName().contains("CTU")) {
-					funcName = "CTU";
-					block.setTypeName("CTU");
-				}
-				if(block.getTypeName().contains("CTD")) {
-					funcName = "CTD";
-					block.setTypeName("CTD");
-				}
-				if(block.getTypeName().contains("CTUD")) {
+				else if(block.getTypeName().contains("CTUD")) {
 					funcName = "CTUD";
 					block.setTypeName("CTUD");
 				}
-				
+				else if(block.getTypeName().contains("CTU")) {
+					funcName = "CTU";
+					block.setTypeName("CTU");
+				}
+				else if(block.getTypeName().contains("CTD")) {
+					funcName = "CTD";
+					block.setTypeName("CTD");
+				}
 				
 				if (ABR2.contains(funcName)&&mutantOperatorList.get("ABR")) {
 					// ABR2: ADD2, SUB, MUL2, DIV, MOD
@@ -360,23 +322,23 @@ public class MutantGenerator {
 					operatorList = CBR2;
 					mutantOperator = "CBR2";
 				} else if (CBR3.contains(funcName)&&mutantOperatorList.get("CBR")) {
-					// CBR3: GE3, GT3, LE3, LT3, EQ3, NE
+					// CBR3: GE3, GT3, LE3, LT3, EQ3
 					operatorList = CBR3;
 					mutantOperator = "CBR3";
 				} else if (CBR4.contains(funcName)&&mutantOperatorList.get("CBR")) {
-					// CBR4: GE4, GT4, LE4, LT4, EQ4, NE
+					// CBR4: GE4, GT4, LE4, LT4, EQ4
 					operatorList = CBR4;
 					mutantOperator = "CBR4";
 				} else if (LBR2.contains(funcName)&&mutantOperatorList.get("LBR")) {
-					// LBR2: AND2, OR2
+					// LBR2: AND2, OR2, XOR2
 					operatorList = LBR2;
 					mutantOperator = "LBR2";
 				} else if (LBR3.contains(funcName)&&mutantOperatorList.get("LBR")) {
-					// LBR3: AND3, OR3
+					// LBR3: AND3, OR3, XOR3
 					operatorList = LBR3;
 					mutantOperator = "LBR3";
 				} else if (LBR4.contains(funcName)&&mutantOperatorList.get("LBR")) {
-					// LBR4: AND4, OR4
+					// LBR4: AND4, OR4, XOR4
 					operatorList = LBR4;
 					mutantOperator = "LBR4";
 				} else if (SBR2.contains(funcName)&&mutantOperatorList.get("SBR")) {
@@ -395,8 +357,7 @@ public class MutantGenerator {
 					// TBR: TP, TON, TOF
 					operatorList = TBR;
 					mutantOperator = "TBR";
-				} 
-				else if (EBR.contains(funcName)&&mutantOperatorList.get("EBR")) {
+				} else if (EBR.contains(funcName)&&mutantOperatorList.get("EBR")) {
 					// EBR: R_TRIG, F_TRIG
 					operatorList = EBR;
 					mutantOperator = "EBR";
@@ -408,25 +369,20 @@ public class MutantGenerator {
 					// CoBR: CTU, CTD
 					operatorList = CouBR;
 					mutantOperator = "CoBR";
-				} 
-				else if(funcName.equals("ABS") || funcName.equals("MOVE")) {
+				} else if(funcName.equals("ABS") || funcName.equals("MOVE")) {
 					// ABS, MOVE: 다른 연산자와 바꿀 수 없음
 					continue;
 				} else {
 					operatorList = null;
 					System.out.println(block.getTypeName());
-					//throw new Error();
-					//System.exit(0);
+//					throw new Error();
+//					System.exit(0);
 				}
-
-				//System.out.println("operatorList: " + operatorList);	
-				//if (operatorList == null) continue;
+				
 				if(operatorList!=null)
-				for (String operator : operatorList) {
-					//System.out.println("splitName.length: " + splitName.length + ", splitName[0]: " + splitName[0] + ", operator: " + operator);		
-					//if it's the same block just pass
-					if (operator.equals(funcName)// || operator.equals(splitName[0] + "_TRIG") 
-							/*|| splitName[0].equals("CTU") || splitName[0].equals("SR")*/)
+				for (String operator : operatorList) {		
+					// if it's the same block just pass
+					if (operator.equals(funcName))
 						continue;
 
 					if (CouBR.contains(funcName)){
@@ -443,7 +399,6 @@ public class MutantGenerator {
 							else if(input.getFormalParameter().equals("LD")) {
 								input.setFormalParameter("R");
 							}
-							
 							
 							System.out.println(input.getFormalParameter());
 						}
@@ -467,7 +422,6 @@ public class MutantGenerator {
 								input.setFormalParameter("R");
 							}
 							
-							
 							System.out.println(input.getFormalParameter());
 						}
 					} else if (BBR.contains(funcName)){
@@ -484,7 +438,6 @@ public class MutantGenerator {
 							else if(input.getFormalParameter().equals("R1")) {
 								input.setFormalParameter("R");
 							}
-							
 							
 							System.out.println(input.getFormalParameter());
 						}
@@ -508,10 +461,9 @@ public class MutantGenerator {
 								input.setFormalParameter("R");
 							}
 							
-							
 							System.out.println(input.getFormalParameter());
 						}
-					}else if(funcName.contains("SUB")||funcName.contains("DIV")||funcName.contains("MOD")||funcName.contains("ADD")||funcName.contains("MUL")
+					} else if(funcName.contains("SUB")||funcName.contains("DIV")||funcName.contains("MOD")||funcName.contains("ADD")||funcName.contains("MUL")
 							||funcName.contains("EQ")||funcName.contains("GE")||funcName.contains("GT")||funcName.contains("LE")||funcName.contains("LT")||funcName.contains("NE")
 							||funcName.contains("AND")||funcName.contains("OR")||funcName.contains("XOR")||funcName.contains("MAX")||funcName.contains("MIN")) {
 						mutantInfoList.add(mutantID,
@@ -544,8 +496,9 @@ public class MutantGenerator {
 						else {
 							replaceBlock(block, funcName);
 						}
+						
 						System.out.println("funcName:  "+funcName);
-					}else  { // TON, TP 등은 GE_DINT 와 달리 typeName이 단어 하나임 (splitName[0]만 있음)
+					} else  { // TON, TOF, TP, R_TRIG, F_TRIG
 						mutantInfoList.add(mutantID,
 								mutantOperator + "\t" + block.getLocalID() + "\t" + block.getTypeName() + " -> " + operator);
 						if(mutantOperator.equals("EBR")) {
@@ -560,13 +513,6 @@ public class MutantGenerator {
 					} 
 				}
 				
-				//System.out.println(splitName[0]);
-				/*
-				boolean swi = false;
-				if (CBR.contains(splitName[0])||BBR.contains(splitName[0])) {
-					swi = true;
-				}
-				*/
 				/***Switch Inputs***/
 				if(mutantOperatorList.get("SWI")) {
 					if (BBR.contains(funcName)) {
@@ -592,9 +538,8 @@ public class MutantGenerator {
 						}
 					}
 					else if(funcName.equals("SUB") || funcName.equals("DIV") || funcName.equals("MOD") ||
-							funcName.contains("GT") || funcName.contains("GE") || funcName.contains("LT") || funcName.contains("LE") /*||
-							funcName.equals("SEL") || funcName.contains("MUX")*/){
-						
+							funcName.contains("GT") || funcName.contains("GE") || funcName.contains("LT") || funcName.contains("LE") ||
+							funcName.equals("SEL") || funcName.contains("MUX")){
 						
 						String order = "";
 						permutation = new ArrayList<String>();
@@ -602,7 +547,6 @@ public class MutantGenerator {
 						for (IInVariableInBlock invar: block.getInVariables()) {
 							if(!invar.getFormalParameter().equals("G")&&!invar.getFormalParameter().equals("K")) {
 								order += invar.getFormalParameter().substring(invar.getFormalParameter().length()-1, invar.getFormalParameter().length());
-								//System.out.println(order);
 							}
 						}
 						String correctOrder = order;
@@ -632,39 +576,7 @@ public class MutantGenerator {
 								}
 							}
 						}
-						/*
-						*/
 					}
-					/*
-					if(funcName.equals("SEL")||funcName.equals("MUX2")) {
-						
-						mutantInfoList.add(mutantID,
-								"SWI" + "\t" + block.getLocalID() + "\t" + block.getTypeName() + " -> " + "INPUT SWITCH");
-						String tempInput[] = new String[2];
-						int order = 0;
-						for (IInVariableInBlock invar: block.getInVariables()) {
-							if(!invar.getFormalParameter().equals("G")&&!invar.getFormalParameter().equals("K")) {
-								tempInput[order] = invar.getFormalParameter();
-								order++;
-							}
-						}
-						order = 0;
-						for (IInVariableInBlock invar: block.getInVariables()) {
-							if(!invar.getFormalParameter().equals("G")&&!invar.getFormalParameter().equals("K")) {
-								invar.setFormalParameter(tempInput[1-order]);
-								order++;
-							}
-						}
-						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
-						order = 0;
-						for (IInVariableInBlock invar: block.getInVariables()) {
-							if(!invar.getFormalParameter().equals("G")&&!invar.getFormalParameter().equals("K")) {
-								invar.setFormalParameter(tempInput[order]);
-								order++;
-							}
-						}
-						//continue;
-					}*/
 				}
 			}
 			// INVAR in BLOCK 에 대한 Mutations: IID (Inverter Insertion & Deletion)
@@ -698,9 +610,8 @@ public class MutantGenerator {
 							outvar.setNegated(inverter);
 						}
 					}
-	
 					// SEL인 경우에 G inval에 대해서만
-					if (funcName.contains("SEL")) {
+					else if (funcName.contains("SEL")) {
 						IInVariableInBlock invar = block.getInVariables().get(0);
 						inverter = invar.isNegated();
 						mutantInfoList.add(mutantID,
@@ -711,10 +622,8 @@ public class MutantGenerator {
 						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
 						invar.setNegated(inverter);
 					}
-					
 					// Relational Operator인 경우에 output에 대해서
-					if (funcName.contains("GT")||funcName.contains("GE")||funcName.contains("LT")||funcName.contains("LE")||funcName.contains("EQ")||funcName.contains("NE")) {
-						// TODO: output negated may not be detected in PLCVerifier
+					else if (funcName.contains("GT")||funcName.contains("GE")||funcName.contains("LT")||funcName.contains("LE")||funcName.contains("EQ")||funcName.contains("NE")) {
 						for (IOutVariableInBlock outvar : block.getOutVariables()) {
 							inverter = outvar.isNegated();
 							mutantInfoList.add(mutantID,
