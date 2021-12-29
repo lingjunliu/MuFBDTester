@@ -830,18 +830,7 @@ public class XML_load {
 					outParam = c.startParam;
 					negated = c.negated;
 					if(getElementById(c.start).type == Element.BLOCK){
-						String startName = getElementById(start).block.getTypeName();
-						String funName = "";
-						//StringTokenizer tok = new StringTokenizer(startName, "_");
-						//funName = tok.nextToken();
-						if(startName.endsWith("_BOOL"))
-							funName = startName.substring(0, startName.length()-5);
-						else if(startName.endsWith("_DINT"))
-							funName = startName.substring(0, startName.length()-5);
-						else if(startName.endsWith("_REAL"))
-							funName = startName.substring(0, startName.length()-5);
-						else
-							funName = startName;
+						String funName = getElementById(start).block.getTypeName();
 						pre_INs.put(start, funName + start + "_" + outParam.toLowerCase());
 						LogicStatement newLogic = new LogicStatement(LogicStatement.VARIABLE, inParam+start);
 
@@ -866,18 +855,7 @@ public class XML_load {
 					outParam = c.startParam;
 					negated = c.negated;
 					if(getElementById(c.start).type == Element.BLOCK){
-						String startName = getElementById(start).block.getTypeName();
-						String funName = "";
-						//StringTokenizer tok = new StringTokenizer(startName, "_");
-						//funName = tok.nextToken();
-						if(startName.endsWith("_BOOL"))
-							funName = startName.substring(0, startName.length()-5);
-						else if(startName.endsWith("_DINT"))
-							funName = startName.substring(0, startName.length()-5);
-						else if(startName.endsWith("_REAL"))
-							funName = startName.substring(0, startName.length()-5);
-						else
-							funName = startName;
+						String funName = getElementById(start).block.getTypeName();
 						pre_CLKs.put(start, funName + start + "_" + outParam.toLowerCase());
 						LogicStatement newLogic = new LogicStatement(LogicStatement.VARIABLE, inParam+start);
 
@@ -902,18 +880,7 @@ public class XML_load {
 					outParam = c.startParam;
 					negated = c.negated;
 					if(getElementById(c.start).type == Element.BLOCK){
-						String startName = getElementById(start).block.getTypeName();
-						String funName = "";
-						//StringTokenizer tok = new StringTokenizer(startName, "_");
-						//funName = tok.nextToken();
-						if(startName.endsWith("_BOOL"))
-							funName = startName.substring(0, startName.length()-5);
-						else if(startName.endsWith("_DINT"))
-							funName = startName.substring(0, startName.length()-5);
-						else if(startName.endsWith("_REAL"))
-							funName = startName.substring(0, startName.length()-5);
-						else
-							funName = startName;
+						String funName = getElementById(start).block.getTypeName();
 						if(getElementById(c.end).type == Element.OUTVAR)
 							pre_Q1s.put(start, getElementById(c.end).outvar.getExpression());
 						else
@@ -941,18 +908,7 @@ public class XML_load {
 					outParam = c.startParam;
 					negated = c.negated;
 					if(getElementById(c.start).type == Element.BLOCK){
-						String startName = getElementById(start).block.getTypeName();
-						String funName = "";
-						//StringTokenizer tok = new StringTokenizer(startName, "_");
-						//funName = tok.nextToken();
-						if(startName.endsWith("_BOOL"))
-							funName = startName.substring(0, startName.length()-5);
-						else if(startName.endsWith("_DINT"))
-							funName = startName.substring(0, startName.length()-5);
-						else if(startName.endsWith("_REAL"))
-							funName = startName.substring(0, startName.length()-5);
-						else
-							funName = startName;
+						String funName = getElementById(start).block.getTypeName();
 						if(getElementById(c.end).type == Element.OUTVAR){
 							pre_CVs.put(start, getElementById(c.end).outvar.getExpression());
 						}else
@@ -1003,15 +959,6 @@ public class XML_load {
 		if (getElementById(start).type == Element.BLOCK) {
 			String startName = getElementById(start).block.getTypeName();
 			String funName = "";
-			//StringTokenizer tok = new StringTokenizer(startName, "-");
-			//funName = tok.nextToken();
-			if(startName.endsWith("_BOOL"))
-				funName = startName.substring(0, startName.length()-5);
-			else if(startName.endsWith("_DINT"))
-				funName = startName.substring(0, startName.length()-5);
-			else if(startName.endsWith("_REAL"))
-				funName = startName.substring(0, startName.length()-5);
-			else
 				funName = startName;
 			boolean found = false;
 			for (functionCalcLibrary FCL : functionCalcLibs) {
@@ -1185,18 +1132,7 @@ public class XML_load {
 					datapath += el.outvar.getExpression();
 				}
 				else {
-					String blockname = el.block.getTypeName();
-					//StringTokenizer tok = new StringTokenizer(blockname, "-");
-					//blockname = tok.nextToken();
-					String funName = "";
-					if(blockname.endsWith("_BOOL"))
-						funName = blockname.substring(0, blockname.length()-5);
-					else if(blockname.endsWith("_DINT"))
-						funName = blockname.substring(0, blockname.length()-5);
-					else if(blockname.endsWith("_REAL"))
-						funName = blockname.substring(0, blockname.length()-5);
-					else
-						funName = blockname;
+					String funName = el.block.getTypeName();
 					if (i != 1)
 						datapath += funName + "_" + DPConn[i - 1].startParam.toLowerCase();
 				}
@@ -1267,15 +1203,7 @@ public class XML_load {
 				macro_first = con.start;
 				macro_second = con.end;
 				getElementById(con.end);
-				fName = getElementById(con.end).block.getTypeName();
-				if(fName.endsWith("_BOOL"))
-					functionName = fName.substring(0, fName.length()-5);
-				else if(fName.endsWith("_DINT"))
-					functionName = fName.substring(0, fName.length()-5);
-				else if(fName.endsWith("_REAL"))
-					functionName = fName.substring(0, fName.length()-5);
-				else
-					functionName = fName;
+				functionName = getElementById(con.end).block.getTypeName();
 				invar = con.endParam;
 				outvar = prevcon.startParam;
 				DPCLibrary functionDPC = findDPCLibrary(functionName, invar, outvar);
