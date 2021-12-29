@@ -586,8 +586,10 @@ public class MutantGenerator {
 				for (IBlock block : body.getBlocks()) {
 					funcName = block.getTypeName();
 	
-					// AND, OR인 경우에 모든 invar와 outvar에 대해서
-					if (funcName.contains("AND") || funcName.contains("OR") || funcName.contains("XOR")) {
+					// AND, OR인 경우에 모든 invar와 outvar에 대해서 (added SR, RS, R_TRIG, F_TRIG to support all the boolean edges)
+					if (funcName.contains("AND") || funcName.contains("OR") || funcName.contains("XOR")
+							|| funcName.contains("SR") || funcName.contains("RS")
+							|| funcName.contains("R_TRIG") || funcName.contains("F_TRIG")) {
 						for (IInVariableInBlock invar : block.getInVariables()) {
 							inverter = invar.isNegated();
 							mutantInfoList.add(mutantID,
