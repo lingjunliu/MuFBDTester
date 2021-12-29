@@ -97,7 +97,7 @@ public class CreateGUI extends Frame implements ActionListener {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize(760, 800);
 
-		// window.setResizable(false);
+		window.setResizable(false);
 		window.setTitle("MuFBDTester");
 		window.setVisible(true);
 
@@ -111,12 +111,6 @@ public class CreateGUI extends Frame implements ActionListener {
 		
 		filePath = new JTextField(20);
 		xmlStatus = new JLabel("");
-		/*
-		mutantFilePath = new JTextField(20);
-
-		mutantOpenButton = new JButton("Open...");
-		mutantOpenButton.addActionListener(this);
-		mutantOpenButton.setActionCommand("mutantOpen");*/
 		
 		JPanel panel_XML = new JPanel();
 		panel_XML.setPreferredSize(new Dimension(750, 40));
@@ -129,15 +123,10 @@ public class CreateGUI extends Frame implements ActionListener {
 		panel_XML.add(filePath);
 		panel_XML.add(openButton);
 		panel_XML.add(xmlStatus);
-		//panel_XML.add(new JLabel("    "));
-		/*
-		panel_XML.add(new JLabel("Mutant Directory : "));
-		panel_XML.add(mutantFilePath);
-		panel_XML.add(mutantOpenButton);
-		*/
+		
 		content.add("North", panel_XML);
 		
-		//create the left panel for constants and testcase
+		// create the left panel for mutant operator selection
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		leftPanel.setPreferredSize(new Dimension(670, 2000));
@@ -151,7 +140,6 @@ public class CreateGUI extends Frame implements ActionListener {
 		mutantOperator.add(Check);
 		leftPanel.add(Check);
 		createPercentageSetting();
-		
 		
 		label = new JLabel("         ");
 		label.setFont(new Font("Microsoft YaHei", Font.PLAIN, 15));
@@ -240,14 +228,11 @@ public class CreateGUI extends Frame implements ActionListener {
 		leftPanel.add(Check);
 		createPercentageSetting();
 		
-		
-		
 		for (JCheckBox ch: mutantOperator) {
 			ch.addActionListener(new ActionListener() {
 
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                //System.out.println("Check");
 	            	if(!ch.isSelected()) {
 	            		select.setText("Select All");
 	            	}
@@ -293,7 +278,7 @@ public class CreateGUI extends Frame implements ActionListener {
 		assessButton = new JButton("Assess Coverage Level");
 		assessButton.addActionListener(this);
 		assessButton.setActionCommand("coverage-level");
-		//yicesFileGenerate.YicesFileGenerate_original();
+//		yicesFileGenerate.YicesFileGenerate_original();
 		
 	}
 	
@@ -304,7 +289,7 @@ public class CreateGUI extends Frame implements ActionListener {
 		String cmd = arg0.getActionCommand();
 		if (cmd.equals("openXML")) {
 			try {
-				open(0);
+				open();
 				if (!filePath.getText().equals("")) {
 					new File(dirPath+target).mkdirs();
 					mg = new MutantGenerator();
@@ -316,19 +301,6 @@ public class CreateGUI extends Frame implements ActionListener {
 				e.printStackTrace();
 			}
 		}
-		/*
-		else if (cmd.equals("mutantOpen")) {
-			try {
-				open(1);
-				if (!filePath.getText().equals("")&&!mutantFilePath.getText().equals("")) {
-					yicesFileGenerate = new YicesFileGenerator();
-					yicesFileGenerate.YicesFileLoad(filePath.getText(), mutantFilePath.getText());
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
 		else if (cmd.equals("execute")) {
 			try {
 				boolean executeOrNot = true;
@@ -381,7 +353,6 @@ public class CreateGUI extends Frame implements ActionListener {
 						else if(j==12) {
 							MutantGenerator.mutantOperatorList.put("TBR", true);
 						}
-						//break;
 					}
 				}
 				if (!checked) {
@@ -400,7 +371,7 @@ public class CreateGUI extends Frame implements ActionListener {
 					if(ParseXML.InputInterface.get(XML_load.inputList.get(i))!=null) {
 						if(XML_load.constantList.contains(XML_load.inputList.get(i))){
 							if (constantValues.get(j+1).getText().isEmpty()) {
-								//CreateGUI.executeButton.setEnabled(false);
+//								CreateGUI.executeButton.setEnabled(false);
 								executeOrNot = false;
 								System.out.println("Please enter constants");
 								console_println("Please enter constants");
@@ -452,7 +423,8 @@ public class CreateGUI extends Frame implements ActionListener {
 						yicesFileGenerate.OriginalYicesHeader();
 					}
 					yicesFileGenerate.YicesFileGenerate(dirPath+target+"/");
-					//yicesFileGenerate.YicesFileGenerate_original();
+//					yicesFileGenerate.YicesFileGenerate_original();
+					
 					long estimatedTime = System.currentTimeMillis() - startTime;
 					writer.write("Time: " + estimatedTime/1000.0 + " sec\r\n");
 					writer.close();
@@ -528,7 +500,7 @@ public class CreateGUI extends Frame implements ActionListener {
 					new File(path).mkdirs();
 					yicesFileGenerate.YicesFileGenerate(path+"//");
 				}
-				//yicesFileGenerate.YicesFileGenerate_original();
+//				yicesFileGenerate.YicesFileGenerate_original();
 				long estimatedTime = System.currentTimeMillis() - startTime;
 				writer.write("Time: " + estimatedTime/1000.0 + " sec\r\n");
 				writer.close();
@@ -556,53 +528,32 @@ public class CreateGUI extends Frame implements ActionListener {
 	FileDialog fd;
 	JFileChooser chooser;
 	
-	public void open(int type) throws IOException {
+	public void open() throws IOException {
 		String filepath = "";
-		if (type == 0) {
-			chooser = new JFileChooser();
-			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
-				     "xml files (*.xml)", "xml");
-			chooser.setDialogTitle("Open XML File");
-			chooser.setFileFilter(xmlfilter);
-			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
-				/*System.out.println("getCurrentDirectory(): " 
-			         +  chooser.getCurrentDirectory());*/
-				System.out.println("getSelectedFile() : " 
-			         +  chooser.getSelectedFile());
-				/*console_println("getSelectedFile() : " 
-			         +  chooser.getSelectedFile());
-				console_flush();*/
-				String[] splitName = chooser.getSelectedFile().getName().split("\\.");
-				target = splitName[0];
-				filepath = ""+chooser.getSelectedFile();
-				filePath.setText(filepath);
-			}
-			else {
-				System.out.println("No Selection ");
-				console_println("No Selection ");
-				console_flush();
-			}
-		}/* else if (type == 1) {
-			chooser = new JFileChooser(); 
-		    //chooser.setCurrentDirectory(new java.io.File("."));
-		    chooser.setDialogTitle("Choose mutant directory");
-		    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		    //
-		    // disable the "All files" option.
-		    //
-		    chooser.setAcceptAllFileFilterUsed(false);
-		    //    
-		    if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
-		    	System.out.println("getCurrentDirectory(): " 
-		         +  chooser.getCurrentDirectory());
-		    	System.out.println("getCurrentDirectory() : " 
-		         +  chooser.getSelectedFile());
-		    	filepath = ""+chooser.getSelectedFile();
-		    	mutantFilePath.setText(filepath);
-		    }
-		    else {
-		    	System.out.println("No Selection ");
-		    }
-		}*/
+		chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File  
+				(System.getProperty("user.dir")+"/input/"));
+		FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
+				 "xml files (*.xml)", "xml");
+		chooser.setDialogTitle("Open XML File");
+		chooser.setFileFilter(xmlfilter);
+		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+			/*System.out.println("getCurrentDirectory(): " 
+				 +  chooser.getCurrentDirectory());*/
+			System.out.println("getSelectedFile() : " 
+				 +  chooser.getSelectedFile());
+			/*console_println("getSelectedFile() : " 
+				 +  chooser.getSelectedFile());
+			console_flush();*/
+			String[] splitName = chooser.getSelectedFile().getName().split("\\.");
+			target = splitName[0];
+			filepath = ""+chooser.getSelectedFile();
+			filePath.setText(filepath);
+		}
+		else {
+			System.out.println("No Selection ");
+			console_println("No Selection ");
+			console_flush();
+		}
 	}
 }
