@@ -172,11 +172,11 @@ public class MutantGenerator {
 		writeMutantInfo(dirPath + "mutant_Info.txt");
 	}
 	
-//	public void allOperator() {
-//		for (String key : mutantOperatorList.keySet()) {
-//			mutantOperatorList.put(key, true);
-//		}
-//	}
+	public static void allOperator() {
+		for (String key : mutantOperatorList.keySet()) {
+			mutantOperatorList.put(key, true);
+		}
+	}
 	
 	public static void deselectAllOperator() {
 		for (String key : mutantOperatorList.keySet()) {

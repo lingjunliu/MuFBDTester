@@ -457,31 +457,32 @@ public class CreateGUI extends Frame implements ActionListener {
 		}
 		else if (cmd.equals("automation")) {
 			try {
-				target = "FFTD";
-				String filepath = "C:\\Users\\Master\\Documents\\SElab\\MuFBDTester\\input\\";
+				target = "MFTD";
+				String filepath = "D:\\SElab projects\\MuFBDTester\\input\\";
 				filePath.setText(filepath + target +".xml");
 				if (!filePath.getText().equals("")) {
 					new File(dirPath+target).mkdirs();
 					mg = new MutantGenerator();
 					yicesFileGenerate = new YicesFileGenerator();
 					yicesFileGenerate.YicesFileLoad(filePath.getText());
-					
 				}
-				MutantGenerator.deselectAllOperator();
-				String mOperator = "CBR";
-				String percent = "100";
-				int operatorIndex = 0;
+//				MutantGenerator.deselectAllOperator();
+//				String mOperator = "CBR";
+//				String percent = "100";
+//				int operatorIndex = 0;
+//				
+//				if(mOperator.equals("CVR"))operatorIndex = 0;
+//				else if(mOperator.equals("IID"))operatorIndex = 1;
+//				else if(mOperator.equals("SWI"))operatorIndex = 2;
+//				else if(mOperator.equals("ABR"))operatorIndex = 3;
+//				else if(mOperator.equals("CBR"))operatorIndex = 4;
+//				else if(mOperator.equals("LBR"))operatorIndex = 5;
+//				else if(mOperator.equals("TBR"))operatorIndex = 12;
+//				
+//				MutantGenerator.mutantOperatorList.put(mOperator, true);
+//				mutantPercentages.get(operatorIndex).setText(percent);
 				
-				if(mOperator.equals("CVR"))operatorIndex = 0;
-				else if(mOperator.equals("IID"))operatorIndex = 1;
-				else if(mOperator.equals("SWI"))operatorIndex = 2;
-				else if(mOperator.equals("ABR"))operatorIndex = 3;
-				else if(mOperator.equals("CBR"))operatorIndex = 4;
-				else if(mOperator.equals("LBR"))operatorIndex = 5;
-				else if(mOperator.equals("TBR"))operatorIndex = 12;
-				
-				MutantGenerator.mutantOperatorList.put(mOperator, true);
-				mutantPercentages.get(operatorIndex).setText(percent);
+				MutantGenerator.allOperator();
 				
 				BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir")+"/output/" + target + "/Execution_time.txt"));
 				
@@ -491,11 +492,12 @@ public class CreateGUI extends Frame implements ActionListener {
 				if (!yicesFileGenerate.executed) {
 					yicesFileGenerate.OriginalYicesHeader();
 				}
-				for (int i = 1; i <= 1; i++) {
-					String path = dirPath+target+"//"+mOperator+"_"+percent+"%-"+i;
-					new File(path).mkdirs();
-					yicesFileGenerate.YicesFileGenerate(path+"//");
-				}
+//				for (int i = 1; i <= 1; i++) {
+//					String path = dirPath+target+"//"+mOperator+"_"+percent+"%-"+i;
+//					new File(path).mkdirs();
+//					yicesFileGenerate.YicesFileGenerate(path+"//");
+//				}
+				yicesFileGenerate.YicesFileGenerate(dirPath+target+"/");
 //				yicesFileGenerate.YicesFileGenerate_original();
 				long estimatedTime = System.currentTimeMillis() - startTime;
 				writer.write("Time: " + estimatedTime/1000.0 + " sec\r\n");
