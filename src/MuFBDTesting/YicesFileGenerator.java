@@ -452,9 +452,11 @@ public class YicesFileGenerator {
 						if (m.matches( )) {
 							int cycleNum = Integer.parseInt(key.substring(tempArray[1][i].length()+2));
 							ts[cycleNum][i] = testCase.valueMap.get(key);
+							break;
 						}
 						if(key.equals(tempArray[1][i])) {
 							ts[0][i] = testCase.valueMap.get(key);
+							break;
 						}
 					}
 				}
