@@ -42,11 +42,9 @@ public class YicesFileGenerator {
 		mutantIDList = new ArrayList<Integer>();
 		for (File file : files) 
 			if (!file.isDirectory()) {
-				System.out.println("     file:" + file.getName());
-				//System.out.println(Files.probeContentType(file.toPath()));
 				if(file.getName().contains("mutant") && file.getName().contains("xml")) {
 					String temp = file.getName().substring(7, 11);
-					if(mutantIsSelected.contains(Integer.parseInt(temp))/*&&Integer.parseInt(temp)==32*//*&&Integer.parseInt(temp)!=17&&Integer.parseInt(temp)!=154&&Integer.parseInt(temp)!=160&&Integer.parseInt(temp)!=161*//*Integer.parseInt(temp)!=156&&Integer.parseInt(temp)!=157&&Integer.parseInt(temp)!=158&&Integer.parseInt(temp)!=159&&Integer.parseInt(temp)!=160*/) {
+					if(mutantIsSelected.contains(Integer.parseInt(temp))) {
 						mutantIDList.add(Integer.parseInt(temp));
 						mutantFiles.add(file.getName());
 					}
@@ -62,20 +60,16 @@ public class YicesFileGenerator {
 	static String mutant_directory = System.getProperty("user.dir")+"/output/"+CreateGUI.target+"/";
 	void YicesFileLoad(String filePath) throws IOException {
 		
-		//mutant_directory = "C:\\Users\\Master\\Documents\\SE\\input\\mutant";
-		/*mutant_directory = mutant_folder;
-		File mutantDir = new File(mutant_folder);
-		getMutantFiles(mutantDir);*/
 		XML_load.mutant = false;
 		xml_load.loadXML(filePath);
 		executed = false;
 	}
+	
 	ArrayList<String> OriginalYicesHeaderList = new ArrayList<String>();
 	void OriginalYicesHeader() throws IOException {
 		
 		XML_load.mutant = false;
 		
-		//xml_load.loadXML("C:\\Users\\Master\\Documents\\SE\\input\\TON.xml");
 		try {
 			xml_load.generateTestSuites(1, 1);
 		} catch (IOException e) {
@@ -85,6 +79,7 @@ public class YicesFileGenerator {
 		
 		OriginalYicesHeaderList = new ArrayList<String>(XML_load.yicesHeaderList);
 	}
+	
 	void YicesFileGenerate(String path) throws IOException, InterruptedException {
 		
 		Path = path;
@@ -116,7 +111,6 @@ public class YicesFileGenerator {
 		}
 		
 		if(!MutantGenerator.LBR_list.isEmpty()) {
-			
 			Collections.shuffle(MutantGenerator.LBR_list);
 			mutantIsSelected.addAll(MutantGenerator.LBR_list.subList(0, (int)(MutantGenerator.LBR_list.size()*Integer.parseInt(CreateGUI.mutantPercentages.get(5).getText())/100.0)));
 		}
@@ -146,18 +140,6 @@ public class YicesFileGenerator {
 			mutantIsSelected.addAll(MutantGenerator.TBR_list.subList(0, (int)(MutantGenerator.TBR_list.size()*Integer.parseInt(CreateGUI.mutantPercentages.get(12).getText())/100.0)));
 		}
 		
-		System.out.println("------- Riensha ------ " + MutantGenerator.CBR_list.size());
-		System.out.println("------- Riensha ------ " + mutantIsSelected.size());
-		System.out.println("------- Riensha ------ " + mutantIsSelected);
-		//Thread.sleep(5000);
-		/*
-		Collections.shuffle(MutantGenerator.ABR_list);
-		mutantIsSelected.addAll(MutantGenerator.ABR_list.subList(0, (int)(MutantGenerator.ABR_list.size()*0.3-1)));
-		Collections.shuffle(MutantGenerator.ABR_list);
-		mutantIsSelected.addAll(MutantGenerator.ABR_list.subList(0, (int)(MutantGenerator.ABR_list.size()*0.3-1)));
-		Collections.shuffle(MutantGenerator.ABR_list);
-		mutantIsSelected.addAll(MutantGenerator.ABR_list.subList(0, (int)(MutantGenerator.ABR_list.size()*0.3-1)));
-		*/
 		mutantFiles = new ArrayList<String>();
 		mutant_directory = System.getProperty("user.dir")+"/output/"+CreateGUI.target+"/";
 		File mutantDir = new File(mutant_directory);
@@ -168,7 +150,6 @@ public class YicesFileGenerator {
 		
 		for(int i=0; i<mutantFiles.size(); i++) {
 			
-
 			yicesWriter = new BufferedWriter(new FileWriter(path+mutantIDList.get(i)+".ys"));
 			
 			for(String definition: OriginalYicesHeaderList) {
@@ -176,7 +157,6 @@ public class YicesFileGenerator {
 			}
 			yicesWriter.write("\r\n");
 			
-			//xml_load_M = new XML_load();
 			XML_load.mutant = true;
 			xml_load_M.loadXML(mutant_directory+"\\"+mutantFiles.get(i));
 			try {
@@ -194,13 +174,11 @@ public class YicesFileGenerator {
 			yicesFooter(path+CreateGUI.target+"/"+mutantIDList.get(i)+".ys");
 			
 			String[] result = yicesExecuter(path+mutantIDList.get(i)+".ys");
-			//System.out.println(result);
-			
-			
 			
 			String testCase = "";
 			boolean equalMutant = false;
 			for(String str: result) {
+				if(str.contains("Error")) break;
 				if(str.equals("unsat")) {
 					System.out.println("equivalent mutant");
 					equalMutant = true;
@@ -215,7 +193,6 @@ public class YicesFileGenerator {
 				}
 			}
 			
-			
 			if(!testCase.equals("")) {
 				TestCase tc = new TestCase(testCase);
 				tc.mutantNo = i;
@@ -224,18 +201,17 @@ public class YicesFileGenerator {
 				System.out.println(tc);
 			}
 			else {
-				if(!equalMutant)
+				if(!equalMutant) {
 					mutantFileWriter.write("error mutant: "+mutantIDList.get(i)+"\r\n");
+				}
 			}
-			//Thread.sleep(2000);
 		}
 		mutantFileWriter.close();
 		solutionWriter(testSuite, "MuFBD"+".txt");
 		executed = true;
 	}
+	
 	void YicesFileGenerate_original() throws IOException {
-		/*
-		xml_load.loadXML("C:\\Users\\Master\\Documents\\SE\\input\\CTU_TON.xml");*/
 		try {
 			xml_load.generateTestSuites(1, 1);
 		} catch (IOException e) {
@@ -245,7 +221,6 @@ public class YicesFileGenerator {
 		
 		ArrayList<String> OriginalYicesHeaderList = new ArrayList<String>(XML_load.yicesHeaderList);
 		
-
 		yicesWriter = new BufferedWriter(new FileWriter(mutant_directory+"Original.ys"));
 		
 		for(String definition: OriginalYicesHeaderList) {
@@ -256,6 +231,7 @@ public class YicesFileGenerator {
 		yicesFooter(mutant_directory+"Original.ys");
 		
 	}
+	
 	private static void assertion() {
 		try {
 			if (xml_load.outputs.length==1) {
@@ -269,8 +245,6 @@ public class YicesFileGenerator {
 			}
 			else {
 				yicesWriter.write("(assert (or");
-				//yicesWriter.write("(/= PTRIP M_PTRIP");
-				
 				for(String str: xml_load.outputs) {
 					yicesWriter.write("(/= ");
 					yicesWriter.write(str);
@@ -287,6 +261,7 @@ public class YicesFileGenerator {
 			System.exit(-1);
 		}
 	}
+	
 	private static void yicesFooter(String fileName) {
 		try {
 			yicesWriter.write("\r\n");
@@ -307,17 +282,15 @@ public class YicesFileGenerator {
 	 * 
 	 */
 	private static String[] yicesExecuter(String fileName) {
-		//		long start = System.currentTimeMillis();
 		ArrayList<String> commandList = new ArrayList<String>();
 		commandList.add(System.getProperty("user.dir")+"/yices-1.0.40/bin/yices.exe");
 		commandList.add(fileName);
 
 		String resultStr = executeCommand(commandList, ".");
 		String[] result = resultStr.split("\n");
-		//		long end = System.currentTimeMillis();
-		//		System.out.println("** yicesExecuter: Time elapsed: " + ( end - start )/1000.0 + " (sec)");
 		return result;
 	}
+	
 	static String executeCommand(List<String> command, String workspaceFolder) {
 		ProcessBuilder builder = new ProcessBuilder(command);
 		builder.directory(new File(workspaceFolder));
@@ -424,21 +397,11 @@ public class YicesFileGenerator {
 			for(int j = 0; j<xml_load.inputs.length; j++){
 				if(xml_load.inputs[j].equals(tempArray[1][i])){
 					tempArray[0][i]= ""+j;
-					tempArray[2][i] = ParseXML.InputInterface.get(tempArray[1][i]).get(0)/*xml_load.itypes[Integer.parseInt(tempArray[0][i])]*/;
+					tempArray[2][i] = ParseXML.InputInterface.get(tempArray[1][i]).get(0);
 					break;
 				}
 			}
 		}
-		/*
-		System.out.println("------------tempArray-------------");
-		for(String[] str: tempArray) {
-			for (String i: str) {
-				System.out.println(i);
-			}
-			System.out.println("-----next-----");
-		}
-		System.out.println(tempArray);
-		*/
 		try {
 			/*constant writing start----------------------------------------------------------------------*/
 			BufferedWriter solution = new BufferedWriter(new FileWriter(Path+fileName));
@@ -475,10 +438,9 @@ public class YicesFileGenerator {
 			for(TestCase testCase: testSuite){
 				solution.write("TS"+tcNum+"\r\n");
 				String[][] ts = new String[XML_load.setIter+2][xml_load.inputs.length];
-				//System.out.println(XML_load.setIter);
 				// initialize inputs (type boolean -> false, others -> 0)
 				for(int i = 0; i< xml_load.inputs.length; i++){
-					if(/*Character.isLetter(tempArray[2][i].charAt(0))*/tempArray[2][i].equals("BOOL")) {
+					if(tempArray[2][i].equals("BOOL")) {
 						for(int j = 0; j<XML_load.setIter+2; j++) {
 							ts[j][i] = "false";
 						}
@@ -491,17 +453,13 @@ public class YicesFileGenerator {
 				}
 				
 				for(String key: testCase.valueMap.keySet()) {
-					//System.out.println(key);
-					//System.out.println(testCase.valueMap.get(key));
 					for(int i = 0; i < xml_load.inputs.length; i++) {
 						String pattern = tempArray[1][i]+"_t[0-9]+";
 						Pattern r = Pattern.compile(pattern);
 						// Now create matcher object.
 						Matcher m = r.matcher(key);
 						if (m.matches( )) {
-							//System.out.println(key);
 							int cycleNum = Integer.parseInt(key.substring(tempArray[1][i].length()+2));
-							//System.out.println(cycleNum);
 							ts[cycleNum][i] = testCase.valueMap.get(key);
 						}
 						if(key.equals(tempArray[1][i])) {
