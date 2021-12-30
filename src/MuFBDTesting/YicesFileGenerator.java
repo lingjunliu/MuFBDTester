@@ -286,6 +286,8 @@ public class YicesFileGenerator {
 	private static String[] yicesExecuter(String fileName) {
 		ArrayList<String> commandList = new ArrayList<String>();
 		commandList.add(System.getProperty("user.dir")+"/yices-1.0.40/bin/yices.exe");
+		// random seed setting
+		commandList.add("--rand-seed=1");
 		commandList.add(fileName);
 
 		String resultStr = executeCommand(commandList, ".");
