@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -198,7 +199,17 @@ public class YicesFileGenerator {
 			}
 		}
 		mutantFileWriter.close();
-		solutionWriter(testSuite, "MuFBD"+".txt");
+		/*** Remove repeated test sequences ***/
+		HashSet<String> testset = new HashSet<String>();
+		ArrayList<TestCase> cleanedTestSuite = new ArrayList<TestCase>();
+		for(TestCase t: testSuite) {
+			if (!testset.contains(t.toString())) {
+				testset.add(t.toString());
+				cleanedTestSuite.add(t);
+			}
+		}
+		/*** Output testcase file ***/
+		solutionWriter(cleanedTestSuite, "MuFBD"+".txt");
 		executed = true;
 	}
 	

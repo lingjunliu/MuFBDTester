@@ -291,7 +291,7 @@ public class XML_load {
 					prevelem.FormalParam = inVar.getFormalParameter();
 
 					if(prevelem.FormalParam.equals("S") || prevelem.FormalParam.equals("S1") || prevelem.FormalParam.equals("R1")|| prevelem.FormalParam.equals("CLK"))
-						setIter = 3;
+						setIter = 2;
 					if (prevelem.type == Element.BLOCK) {
 						console_println(prevelem.LocalID + prevelem.block.getTypeName() + " <-> " + nextelem.LocalID + " "
 								+ nextelem.block.getTypeName());
