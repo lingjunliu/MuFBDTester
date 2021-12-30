@@ -5,7 +5,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -28,13 +27,10 @@ public class ParseXML {
 	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	         doc = dBuilder.parse(inputFile);
-	         //System.out.println("----------------------------");
 	         NodeList nlist = doc.getElementsByTagName("inputVars");
 	         parse(nlist, InputInterface);
-	         //System.out.println("----------------------------");
 	         nlist = doc.getElementsByTagName("outputVars");
 	         parse(nlist, OutputInterface);
-	         //System.out.println("----------------------------");
 	         nlist = doc.getElementsByTagName("inOutVars");
 	         parse(nlist, InoutInterface);
 	         
@@ -48,22 +44,18 @@ public class ParseXML {
 	       	 Element e = (Element) nlist.item(i);
 	       	 for(int j = 0; j < e.getElementsByTagName("variable").getLength(); j++) {
 		       	 Element variable = (Element) e.getElementsByTagName("variable").item(j);
-		       	 //System.out.println(variable.getAttribute("name"));
 		       	 String name = variable.getAttribute("name");
 		       	 String dataType = "";
 		       	 String testcase = "";
 		       	 if(variable.getElementsByTagName("type").getLength()!=0) {
 		       		 Element type = (Element) variable.getElementsByTagName("type").item(0);
 		       		 if(type.getElementsByTagName("INT").getLength()!=0) {
-		       			 //System.out.println("INT");
 		       			 dataType = "INT";
 		       		 }
 		       		 if(type.getElementsByTagName("BOOL").getLength()!=0) {
-		       			 //System.out.println("BOOL");
 		       			 dataType = "BOOL";
 		       		 }
 		       		if(type.getElementsByTagName("REAL").getLength()!=0) {
-		      			 //System.out.println("REAL");
 		      			 dataType = "REAL";
 		      		 }
 		       	 }
@@ -73,7 +65,6 @@ public class ParseXML {
 		       	 if(variable.getElementsByTagName("initialValue").getLength()!=0) {
 		       		 Element initialValue = (Element) variable.getElementsByTagName("initialValue").item(0);
 		       		 Element simpleValue = (Element)initialValue.getElementsByTagName("simpleValue").item(0);
-		       		 //System.out.println(simpleValue.getAttribute("value"));
 		       		 testcase = simpleValue.getAttribute("value");
 		       	 }
 		       	 else {
