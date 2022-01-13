@@ -209,9 +209,10 @@ public class YicesFileGenerator {
 			}
 		}
 		/*** Output testcase file ***/
-		solutionWriter(cleanedTestSuite, "MuFBD"+".txt");
+		solutionWriter(cleanedTestSuite, "MuFBD"/*+"-"+randomSeed*/+".txt");
 		executed = true;
 	}
+	static int randomSeed = 10;
 	
 	void YicesFileGenerate_original() throws IOException {
 		try {
@@ -287,7 +288,7 @@ public class YicesFileGenerator {
 		ArrayList<String> commandList = new ArrayList<String>();
 		commandList.add(System.getProperty("user.dir")+"/yices-1.0.40/bin/yices.exe");
 		// random seed setting
-		commandList.add("--rand-seed=1");
+//		commandList.add("--rand-seed="+randomSeed);
 		commandList.add(fileName);
 
 		String resultStr = executeCommand(commandList, ".");
