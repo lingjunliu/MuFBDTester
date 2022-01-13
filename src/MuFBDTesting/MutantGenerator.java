@@ -48,6 +48,10 @@ public class MutantGenerator {
 	private ArrayList<String> BBR = new ArrayList<String>();
 	private ArrayList<String> CouBR = new ArrayList<String>();
 	
+	// Logical Block Replacement Operator-Improved
+	private ArrayList<String> LRO_I = new ArrayList<String>();
+	boolean LRO_I_OrNot = false;
+	
 	/*** mutant id list of each operator ***/
 	public static ArrayList<Integer> CVR_list = new ArrayList<Integer>();
 	public static ArrayList<Integer> IID_list = new ArrayList<Integer>();
@@ -133,6 +137,11 @@ public class MutantGenerator {
 		
 		CouBR.add("CTU");
 		CouBR.add("CTD");
+		
+		// Logical Block Replacement Operator-Improved
+		LRO_I.add("AND2");
+		LRO_I.add("OR2");
+		LRO_I.add("XOR2");
 		
 		mutantOperatorList.put("CVR", false);
 		mutantOperatorList.put("IID", false);
@@ -513,7 +522,62 @@ public class MutantGenerator {
 					} 
 				}
 				
-				/***Switch Inputs***/
+				/*** Logical Block Replacement Operator-Improved ***/
+				if(LRO_I_OrNot && LRO_I.contains(funcName)) {
+					for(IInVariableInBlock input: block.getInVariables()) {
+						if(input.getFormalParameter().equals("IN1")) {
+							input.setFormalParameter("S1");
+						}
+						else if(input.getFormalParameter().equals("IN2")) {
+							input.setFormalParameter("R");
+						}
+						
+						System.out.println(input.getFormalParameter());
+					}
+					for (IOutVariableInBlock outvar : block.getOutVariables()) {
+						if(outvar.getFormalParameter().equals("OUT")) {
+							outvar.setFormalParameter("Q1");
+						}
+					}
+					mutantInfoList.add(mutantID,
+							"LRO-I" + "\t" + block.getLocalID() + "\t" + block.getTypeName() + " -> " + "SR");
+					BBR_list.add(mutantID);
+					replaceBlock(block, "SR");
+					writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+					replaceBlock(block, funcName.substring(0, funcName.length()-1));
+					for(IInVariableInBlock input: block.getInVariables()) {
+						if(input.getFormalParameter().equals("S1")) {
+							input.setFormalParameter("S");
+						}
+						else if(input.getFormalParameter().equals("R")) {
+							input.setFormalParameter("R1");
+						}
+						System.out.println(input.getFormalParameter());
+					}
+					mutantInfoList.add(mutantID,
+							"LRO-I" + "\t" + block.getLocalID() + "\t" + block.getTypeName() + " -> " + "RS");
+					BBR_list.add(mutantID);
+					replaceBlock(block, "RS");
+					writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+					replaceBlock(block, funcName.substring(0, funcName.length()-1));
+					for(IInVariableInBlock input: block.getInVariables()) {
+						if(input.getFormalParameter().equals("S")) {
+							input.setFormalParameter("IN1");
+						}
+						else if(input.getFormalParameter().equals("R1")) {
+							input.setFormalParameter("IN2");
+						}
+						
+						System.out.println(input.getFormalParameter());
+					}
+					for (IOutVariableInBlock outvar : block.getOutVariables()) {
+						if(outvar.getFormalParameter().equals("Q1")) {
+							outvar.setFormalParameter("OUT");
+						}
+					}
+				}
+				
+				/*** Switch Inputs ***/
 				if(mutantOperatorList.get("SWI")) {
 					if (BBR.contains(funcName)) {
 						String tempInput[] = new String[2];
