@@ -524,6 +524,8 @@ public class MutantGenerator {
 				
 				/*** Logical Block Replacement Operator-Improved ***/
 				if(LRO_I_OrNot && LRO_I.contains(funcName)) {
+					// Logical block -> SR
+					block.setInstanceName("SR_Manual");
 					for(IInVariableInBlock input: block.getInVariables()) {
 						if(input.getFormalParameter().equals("IN1")) {
 							input.setFormalParameter("S1");
@@ -531,7 +533,6 @@ public class MutantGenerator {
 						else if(input.getFormalParameter().equals("IN2")) {
 							input.setFormalParameter("R");
 						}
-						
 						System.out.println(input.getFormalParameter());
 					}
 					for (IOutVariableInBlock outvar : block.getOutVariables()) {
@@ -541,9 +542,9 @@ public class MutantGenerator {
 					}
 					mutantInfoList.add(mutantID,
 							"LRO-I" + "\t" + block.getLocalID() + "\t" + block.getTypeName() + " -> " + "SR");
-					BBR_list.add(mutantID);
 					replaceBlock(block, "SR");
 					writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+					// SR -> RS
 					replaceBlock(block, funcName.substring(0, funcName.length()-1));
 					for(IInVariableInBlock input: block.getInVariables()) {
 						if(input.getFormalParameter().equals("S1")) {
@@ -556,10 +557,11 @@ public class MutantGenerator {
 					}
 					mutantInfoList.add(mutantID,
 							"LRO-I" + "\t" + block.getLocalID() + "\t" + block.getTypeName() + " -> " + "RS");
-					BBR_list.add(mutantID);
 					replaceBlock(block, "RS");
 					writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+					// RS -> original logical block
 					replaceBlock(block, funcName.substring(0, funcName.length()-1));
+					block.setInstanceName(null);
 					for(IInVariableInBlock input: block.getInVariables()) {
 						if(input.getFormalParameter().equals("S")) {
 							input.setFormalParameter("IN1");
@@ -567,7 +569,6 @@ public class MutantGenerator {
 						else if(input.getFormalParameter().equals("R1")) {
 							input.setFormalParameter("IN2");
 						}
-						
 						System.out.println(input.getFormalParameter());
 					}
 					for (IOutVariableInBlock outvar : block.getOutVariables()) {
