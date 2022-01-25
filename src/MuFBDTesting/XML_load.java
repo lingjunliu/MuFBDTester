@@ -224,6 +224,7 @@ public class XML_load {
 						String prevOut = outVar.getExpression();
 						outVar.setExpression(prevOut+"_out");
 					}
+				// repeated output writing
 				if(el.type == Element.OUTVAR)
 					if(el.outvar.getExpression().equals(outVar.getExpression())){
 						String prevOut = outVar.getExpression();
@@ -306,7 +307,6 @@ public class XML_load {
 		
 		for (IOutVariable outVariable : outputVariables) {
 			// [Block] <====> [Outvar] 연결을 추출한다.
-			// [Invar] <====> [Outvar] 라는 connection은 무시.
 			Element nextelem = getElementById(outVariable.getLocalID());
 			for (IConnection conn : outVariable.getConnectionPointIn().getConnections()) {
 
@@ -316,7 +316,7 @@ public class XML_load {
 				// nextelem : outvar
 				// prevelem : block
 				IBlock prevblock = prevelem.block;
-				IInVariable prev = prevelem.invar;
+				
 				if(prevblock != null){
 					Connection newCon = new Connection(prevelem.LocalID, conn.getFormalParam(), nextelem.LocalID, outVariable.getExpression());
 					if (outVariable.isNegated()) {
@@ -332,14 +332,16 @@ public class XML_load {
 					prevelem.nextElement = nextelem;
 					nextelem.prevElement = prevelem;
 				}
+				// [Invar] <====> [Outvar] connection
+				IInVariable prev = prevelem.invar;
 				if(prev != null) {
 					Connection newCon = new Connection(prevelem.LocalID, prev.getExpression(), nextelem.LocalID, outVariable.getExpression());
 
 					connections.add(newCon);
-					console_println("Block " + prevblock.getTypeName() + " : ");
-					console_println(conn.getFormalParam() + " / " + outVariable.getExpression());
+					console_println("Input Variable "+" : ");
+					console_println(prev.getExpression() + " / " + outVariable.getExpression());
 
-					console_println(prevelem.LocalID + " " + prevelem.block.getTypeName() + " <-> " + nextelem.LocalID + " "
+					console_println(prevelem.LocalID + " " + prev.getExpression() + " <-> " + nextelem.LocalID + " "
 							+ nextelem.outvar.getExpression());
 					prevelem.nextElement = nextelem;
 					nextelem.prevElement = prevelem;
@@ -1689,6 +1691,7 @@ public class XML_load {
 				}
 			// -------------------------------------------------------- Writing function calculation definitions ends */
 			
+			// [Invar] <====> [Outvar] connection
 			List<String> invarList = new ArrayList<String>();
 			
 			for (IInVariable inVar : inputVariables) {
@@ -1965,6 +1968,7 @@ public class XML_load {
 					}
 				}
 			
+			// [Invar] <====> [Outvar] connection
 			List<String> invarList = new ArrayList<String>();
 			
 			for (IInVariable inVar : inputVariables) {
