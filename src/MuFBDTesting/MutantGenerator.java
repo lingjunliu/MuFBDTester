@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -51,6 +52,9 @@ public class MutantGenerator {
 	// Logical Block Replacement Operator-Improved
 	private ArrayList<String> LRO_I = new ArrayList<String>();
 	boolean LRO_I_OrNot = false;
+	
+	// Feedback loop Insertion Operator
+	boolean FIO_OrNot = false;
 	
 	/*** mutant id list of each operator ***/
 	public static ArrayList<Integer> CVR_list = new ArrayList<Integer>();
@@ -805,6 +809,36 @@ public class MutantGenerator {
 							writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
 							invar.setExpression(number);
 						}
+					}
+				}
+			}
+			
+			/*** Feedback loop Insertion Operator ***/
+			if (FIO_OrNot) {
+				ArrayList<String> constants = new ArrayList<>();
+				for (String key: ParseXML.InputInterface.keySet()) {
+					if (ParseXML.InputInterface.get(key).get(1)!="NULL") constants.add(key);
+				}
+				ArrayList<String> inputs = new ArrayList<>();
+				HashSet<String> repeatedInputs = new HashSet<>();
+				for (IInVariable in: body.getInVariables()) {
+					if (constants.contains(in.getExpression())) continue;
+					if (inputs.contains(in.getExpression())) repeatedInputs.add(in.getExpression());
+					else inputs.add(in.getExpression());
+				}
+				for (IInVariable in: body.getInVariables()) {
+					if (!repeatedInputs.contains(in.getExpression())) continue;
+					for (String inout: ParseXML.InoutInterface.keySet()) {
+						if (ParseXML.InputInterface.get(in.getExpression())==null) continue;
+						if (ParseXML.InoutInterface.get(inout).get(0) != ParseXML.InputInterface.get(in.getExpression()).get(0)) continue;
+						String expression = in.getExpression();
+						in.setExpression(inout);
+						
+						mutantInfoList.add(mutantID, "FIO" + "\t" + in.getLocalID() + "\t" + expression + " -> "
+								+ inout);
+						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+						
+						in.setExpression(expression);
 					}
 				}
 			}
