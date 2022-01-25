@@ -15,6 +15,7 @@ import plcopen.inf.model.IFileHeader;
 import plcopen.inf.type.group.fbd.IBlock;
 import plcopen.inf.type.group.fbd.IInVariable;
 import plcopen.inf.type.group.fbd.IInVariableInBlock;
+import plcopen.inf.type.group.fbd.IOutVariable;
 import plcopen.inf.type.group.fbd.IOutVariableInBlock;
 import plcopen.model.ProjectImpl;
 import plcopen.type.body.FBD;
@@ -55,6 +56,9 @@ public class MutantGenerator {
 	
 	// Feedback loop Insertion Operator
 	boolean FIO_OrNot = false;
+	
+	// Variable Replacement Operator
+	boolean VRO_OrNot = true;
 	
 	/*** mutant id list of each operator ***/
 	public static ArrayList<Integer> CVR_list = new ArrayList<Integer>();
@@ -839,6 +843,59 @@ public class MutantGenerator {
 						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
 						
 						in.setExpression(expression);
+					}
+				}
+			}
+			
+			/*** Variable Replacement Operator***/
+			if (VRO_OrNot) {
+				ArrayList<String> constants = new ArrayList<>();
+				for (String key: ParseXML.InputInterface.keySet()) {
+					if (ParseXML.InputInterface.get(key).get(1)!="NULL") constants.add(key);
+				}
+				for (IInVariable inVar: body.getInVariables()) {
+					if (constants.contains(inVar.getExpression())) continue;
+					for (String input: ParseXML.InputInterface.keySet()) {
+						if (input.equals(inVar.getExpression())) continue;
+						if (constants.contains(input)) continue;
+						if (ParseXML.InputInterface.get(inVar.getExpression())==null) continue;
+						if (ParseXML.InputInterface.get(input).get(0) != ParseXML.InputInterface.get(inVar.getExpression()).get(0)) continue;
+						String expression = inVar.getExpression();
+						inVar.setExpression(input);
+						
+						mutantInfoList.add(mutantID, "VRO" + "\t" + inVar.getLocalID() + "\t" + expression + " -> "
+								+ input);
+						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+						
+						inVar.setExpression(expression);
+					}
+				}
+				for (IOutVariable outVar: body.getOutVariables()) {
+					for (String output: ParseXML.OutputInterface.keySet()) {
+						if (output.equals(outVar.getExpression())) continue;
+						if (ParseXML.OutputInterface.get(outVar.getExpression())==null) continue;
+						if (ParseXML.OutputInterface.get(output).get(0) != ParseXML.OutputInterface.get(outVar.getExpression()).get(0)) continue;
+						String expression = outVar.getExpression();
+						outVar.setExpression(output);
+						
+						mutantInfoList.add(mutantID, "VRO" + "\t" + outVar.getLocalID() + "\t" + expression + " -> "
+								+ output);
+						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+						
+						outVar.setExpression(expression);
+					}
+					for (String inout: ParseXML.InoutInterface.keySet()) {
+						if (inout.equals(outVar.getExpression())) continue;
+						if (ParseXML.InoutInterface.get(outVar.getExpression())==null) continue;
+						if (ParseXML.InoutInterface.get(inout).get(0) != ParseXML.InoutInterface.get(outVar.getExpression()).get(0)) continue;
+						String expression = outVar.getExpression();
+						outVar.setExpression(inout);
+						
+						mutantInfoList.add(mutantID, "VRO" + "\t" + outVar.getLocalID() + "\t" + expression + " -> "
+								+ inout);
+						writeXML(xml, dirPath + "mutant_" + String.format("%04d", mutantID++) + ".xml");
+						
+						outVar.setExpression(expression);
 					}
 				}
 			}
