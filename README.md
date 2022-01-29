@@ -2,6 +2,7 @@
 Function block diagram (FBD) is a standard programming language for programmable logic controllers (PLCs). As PLCs have been commonly used to develop safety-critical systems, it is crucial to test FBD programs for such systems effectively. Research on automated FBD test generation mainly focused on achieving certain structural coverage criteria. Although tests achieving a high coverage level can detect errors, they fail to provide the assurance of fault detection. Mutation testing is an error-based testing technique that can be used to generate mutation-adequate test suite. Mutation-adequate test suites are highly effective at revealing specific types of faults that are expressed by mutation operators. Since FBD programs are mainly implemented in safety-critical systems, it is required to provide some guarantees for fault detection. To provide a certain level of guarantee for detecting specific types of faults, this project MuFBDTester developed an automated testing tool that generates mutation-based test sequence for FBD programs.
 
 # Installation
+This project is developed using Eclipse IDE.
 
 # Publications
 - [Liu, Lingjun. "Automated Mutation-adequate Test Generation for Function Block Diagram Programs." Master thesis, KAIST, 2021.](https://www.researchgate.net/publication/358164206_Automated_Mutation-adequate_Test_Generation_for_Function_Block_Diagram_Programs)
