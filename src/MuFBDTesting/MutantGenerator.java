@@ -548,7 +548,7 @@ public class MutantGenerator {
 							outvar.setFormalParameter("Q1");
 						}
 					}
-					// for the inputs connected to the SR (or RS) block, the FormalParameter should be modified.
+					// for the block inputs connected to the output of SR (or RS) block, the FormalParameter should be modified.
 					ArrayList<IInVariableInBlock> connectionInputs = new ArrayList<>();
 					for (IBlock b: body.getBlocks()) {
 						if (b.getLocalID()==block.getLocalID()) continue;
@@ -557,6 +557,15 @@ public class MutantGenerator {
 								connectionInputs.add(in);
 								in.getConnectionPointIn().getConnections().get(0).setFormalParam("Q1");
 							}
+						}
+					}
+					// for the output variables connected to the output of SR (or RS) block, the FormalParameter should be modified.
+					ArrayList<IOutVariable> connectionOutputs = new ArrayList<>();
+					for (IOutVariable outvar : body.getOutVariables()) {
+						if(outvar.getConnectionPointIn().getConnections().get(0).getRefLocalID()==block.getLocalID()) {
+							connectionOutputs.add(outvar);
+							outvar.getConnectionPointIn().getConnections().get(0).setFormalParam("Q1");
+							break;
 						}
 					}
 					mutantInfoList.add(mutantID,
@@ -597,6 +606,9 @@ public class MutantGenerator {
 					}
 					for (IInVariableInBlock in: connectionInputs) {
 						in.getConnectionPointIn().getConnections().get(0).setFormalParam("OUT");
+					}
+					for (IOutVariable out: connectionOutputs) {
+						out.getConnectionPointIn().getConnections().get(0).setFormalParam("OUT");
 					}
 				}
 				
