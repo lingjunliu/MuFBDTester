@@ -5,10 +5,11 @@ Function block diagram (FBD) is a standard programming language for programmable
 This project is developed using Eclipse IDE.
 
 # Publications
-- [Liu, Lingjun. "Automated Mutation-adequate Test Generation for Function Block Diagram Programs." Master thesis, KAIST, 2021.](https://www.researchgate.net/publication/358164206_Automated_Mutation-adequate_Test_Generation_for_Function_Block_Diagram_Programs)
-- Liu, Lingjun, Eunkyoung Jee, and Doo-Hwan Bae. "MuGenFBD: Automated Mutant Generator for Function Block Diagram Programs." KIPS Transactions on Software and Data Engineering 10.4 (2021): 115-124.
-- Liu, Lingjun, Eunkyoung Jee, and Doo-Hwan Bae. "Analysis of coupling effect hypothesis for function block diagram programs." Korea Software Congress, pp. 162-164, 2020.
-- Liu, Lingjun, Eunkyoung Jee, and Doo-Hwan Bae. "Automated mutant generation for function block diagram programs." Proceedings of the 22nd Korea Conference on Software Engineering (KCSE), pp. 154-155, 2020.
+- Lingjun Liu, Eunkyoung Jee, and Doo-Hwan Bae. MuFBDTester: A mutation-based test sequence generator for FBD programs implementing nuclear power plant software. Softw Test Verif Reliab. 2022. e1815. https://doi.org/10.1002/stvr.1815
+- [Lingjun Liu. "Automated Mutation-adequate Test Generation for Function Block Diagram Programs." Master thesis, KAIST, 2021.](https://www.researchgate.net/publication/358164206_Automated_Mutation-adequate_Test_Generation_for_Function_Block_Diagram_Programs)
+- Lingjun Liu, Eunkyoung Jee, and Doo-Hwan Bae. "MuGenFBD: Automated Mutant Generator for Function Block Diagram Programs." KIPS Transactions on Software and Data Engineering 10.4 (2021): 115-124.
+- Lingjun Liu, Eunkyoung Jee, and Doo-Hwan Bae. "Analysis of coupling effect hypothesis for function block diagram programs." Korea Software Congress, pp. 162-164, 2020.
+- Lingjun Liu, Eunkyoung Jee, and Doo-Hwan Bae. "Automated mutant generation for function block diagram programs." Proceedings of the 22nd Korea Conference on Software Engineering (KCSE), pp. 154-155, 2020.
 
 # Developer Contact
 Lingjun Liu: riensha@se.kaist.ac.kr
